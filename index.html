@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mérida Properties — Find Your Home in Yucatán</title>
 <meta name="description" content="Search 766+ listings from Mérida's top real estate agencies. All prices in USD. Built for US and Canadian buyers.">
+<!-- Leaflet loaded lazily on first map click -->
 <style>
 /* ── Reset & tokens ───────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -332,6 +333,9 @@ img  { display: block; }
   padding: 0 4px;
 }
 
+/* ── Feature 3: Pill count ────────────────────────────────── */
+.pill-count { opacity: .55; font-size: 11px; margin-left: 3px; }
+
 /* ── Area / type tags ─────────────────────────────────────── */
 .area-tag {
   display: inline-block;
@@ -394,6 +398,22 @@ img  { display: block; }
 @media (min-width: 580px)  { .grid { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 900px)  { .grid { grid-template-columns: repeat(3, 1fr); } }
 
+/* ── Feature 4: View toggle & map ─────────────────────────── */
+.view-toggle { display: flex; border: 1.5px solid var(--border); border-radius: 8px; overflow: hidden; }
+.view-btn { padding: 7px 14px; border: none; background: #fff; font-size: 13px; color: var(--muted); cursor: pointer; font-family: var(--font); font-weight: 500; }
+.view-btn.active { background: var(--navy); color: #fff; }
+.map-container { height: 520px; border-radius: 12px; overflow: hidden; margin-bottom: 20px; }
+
+/* ── Feature 8: Currency toggle ───────────────────────────── */
+.cur-toggle {
+  padding: 7px 14px; border-radius: 8px;
+  border: 1.5px solid var(--border); background: #fff;
+  font-size: 13px; color: var(--text); cursor: pointer;
+  font-family: var(--font); font-weight: 600;
+  transition: border-color .15s;
+}
+.cur-toggle:hover { border-color: var(--navy); }
+
 /* ── Property card ────────────────────────────────────────── */
 .card {
   background: var(--card);
@@ -446,7 +466,7 @@ img  { display: block; }
 }
 .agency-bar { height: 3px; width: 100%; }
 .card-body { padding: 16px; flex: 1; display: flex; flex-direction: column; gap: 10px; }
-.card-price { font-size: 21px; font-weight: 800; color: var(--green); line-height: 1; }
+.card-price { font-size: 26px; font-weight: 800; color: var(--green); line-height: 1; letter-spacing: -.3px; }
 .card-price small { font-size: 12px; font-weight: 400; color: var(--muted); margin-left: 3px; }
 .card-title {
   font-size: 14px;
@@ -498,6 +518,69 @@ img  { display: block; }
   white-space: nowrap;
 }
 .btn-ask:hover { background: #A33B22; }
+
+/* ── Feature 5: Favorites ─────────────────────────────────── */
+.btn-fav {
+  position: absolute; top: 8px; left: 10px; z-index: 2;
+  background: rgba(255,255,255,.85); backdrop-filter: blur(4px);
+  border: none; border-radius: 50%;
+  width: 32px; height: 32px;
+  font-size: 16px; line-height: 1;
+  color: #D1D5DB; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: color .15s, background .15s;
+}
+.btn-fav:hover  { color: #EF4444; background: #fff; }
+.btn-fav.fav-active { color: #EF4444; }
+
+/* ── Feature 7: WhatsApp share ────────────────────────────── */
+.btn-share {
+  padding: 10px 12px;
+  background: #25D366; color: #fff;
+  border: none; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .15s;
+  flex-shrink: 0;
+}
+.btn-share:hover { background: #1ebe5a; }
+
+/* ── Feature 2: Skeleton loading ──────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -800px 0; }
+  100% { background-position:  800px 0; }
+}
+.shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: 6px;
+}
+.card-skeleton {
+  background: var(--card);
+  border-radius: var(--r);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.sk-img   { height: 172px; }
+.sk-body  { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+.sk-price { height: 28px; width: 55%; }
+.sk-title { height: 16px; width: 90%; }
+.sk-title2{ height: 16px; width: 65%; }
+.sk-attrs { height: 12px; width: 45%; }
+
+/* ── Feature 6: Search ────────────────────────────────────── */
+.search-row { padding: 8px 0 4px; }
+.search-wrap { position: relative; display: flex; align-items: center; }
+.search-icon { position: absolute; left: 12px; color: var(--muted); flex-shrink: 0; pointer-events: none; }
+.search-input {
+  width: 100%; padding: 10px 36px 10px 38px;
+  border: 1.5px solid var(--border); border-radius: 10px;
+  font-size: 14px; font-family: var(--font);
+  background: #fff; color: var(--text);
+  transition: border-color .15s;
+}
+.search-input:focus { outline: none; border-color: var(--navy); }
+.search-clear { position: absolute; right: 10px; background: none; border: none; color: var(--muted); font-size: 14px; cursor: pointer; padding: 4px; }
 
 /* ── Empty state ──────────────────────────────────────────── */
 .empty { grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--muted); }
@@ -756,6 +839,83 @@ img  { display: block; }
 }
 .footer a { color: rgba(255,255,255,.75); }
 
+/* ── Mobile filter drawer ─────────────────────────────────── */
+.filter-mobile-bar {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0 2px;
+}
+.filter-mobile-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 16px;
+  background: var(--navy);
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.filter-badge-count {
+  background: var(--gold);
+  color: #0F2942;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 1px 6px;
+  border-radius: 8px;
+  min-width: 18px;
+  text-align: center;
+}
+.filter-active-pills {
+  display: flex;
+  gap: 5px;
+  overflow: hidden;
+  flex: 1;
+}
+.filter-active-chip {
+  font-size: 11px;
+  padding: 3px 9px;
+  background: var(--navy);
+  color: #fff;
+  border-radius: 12px;
+  white-space: nowrap;
+}
+.filter-rows { display: contents; }
+@media (max-width: 579px) {
+  .filter-mobile-bar { display: flex; }
+  .filter-rows { display: none; }
+  .filter-rows.open { display: contents; }
+}
+
+/* ── Back to top ──────────────────────────────────────────── */
+.back-to-top {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  z-index: 140;
+  background: #fff;
+  border: 1.5px solid var(--border);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,.1);
+  font-size: 18px;
+  color: var(--navy);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s, transform .2s;
+  cursor: pointer;
+}
+.back-to-top.visible { opacity: 1; pointer-events: auto; }
+.back-to-top:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,.15); }
+
 /* ── Utility ──────────────────────────────────────────────── */
 .hidden { display: none !important; }
 </style>
@@ -834,6 +994,23 @@ img  { display: block; }
 <!-- ── Filter bar ─────────────────────────────────────────── -->
 <div class="filter-wrap">
   <div class="filter-inner">
+    <div class="filter-mobile-bar">
+      <button class="filter-mobile-toggle" id="js-filter-toggle">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M1 3h12M3 7h8M5 11h4"/></svg>
+        Filters
+        <span class="filter-badge-count" id="js-filter-badge" style="display:none"></span>
+      </button>
+      <div class="filter-active-pills" id="js-active-pills"></div>
+    </div>
+    <div class="filter-rows" id="js-filter-rows">
+    <!-- Feature 6: Search row -->
+    <div class="search-row">
+      <div class="search-wrap">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M7 13A6 6 0 1 0 7 1a6 6 0 0 0 0 12zM15 15l-3.5-3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <input type="search" class="search-input" id="js-search" placeholder="Search listings by name or neighborhood…" autocomplete="off">
+        <button class="search-clear" id="js-search-clear" style="display:none" onclick="clearSearch()">✕</button>
+      </div>
+    </div>
     <div class="filter-row filter-row-agency">
       <span class="filter-lbl">Agency</span>
       <button class="pill active" data-f="agency" data-v="all">All</button>
@@ -847,6 +1024,7 @@ img  { display: block; }
       <button class="pill pill-gold" data-f="agency" data-v="balam">&#11088; Balam Group <span class="gold-badge">Gold Sponsor</span></button>
       <button class="pill" data-f="agency" data-v="meridareg">Mérida Real Estate Group</button>
       <button class="pill" data-f="agency" data-v="christies">Christie's Mexico</button>
+      <!-- Feature 5: Favorites pill (appended by JS) -->
     </div>
     <div class="filter-row filter-row-area">
       <span class="filter-lbl">Area</span>
@@ -880,6 +1058,7 @@ img  { display: block; }
       <button class="pill" data-f="beds" data-v="4">4+</button>
       <span class="count-badge" id="js-count">— shown</span>
     </div>
+    </div><!-- /.filter-rows -->
   </div>
 </div>
 
@@ -891,16 +1070,28 @@ img  { display: block; }
   </div>
   <div class="results-bar">
     <h2><strong id="js-vis">0</strong> properties</h2>
-    <select class="sort-sel" id="js-sort">
-      <option value="price-asc">Price: Low → High</option>
-      <option value="price-desc">Price: High → Low</option>
-      <option value="beds-desc">Most Bedrooms First</option>
-    </select>
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+      <!-- Feature 4: View toggle -->
+      <div class="view-toggle">
+        <button class="view-btn active" id="js-view-grid" onclick="setView('grid')">&#8862; Grid</button>
+        <button class="view-btn" id="js-view-map" onclick="setView('map')">&#8857; Map</button>
+      </div>
+      <!-- Feature 8: Currency toggle -->
+      <button class="cur-toggle" id="js-cur-toggle" onclick="toggleCurrency()">&#127474;&#127485; MXN</button>
+      <select class="sort-sel" id="js-sort">
+        <option value="price-asc">Price: Low → High</option>
+        <option value="price-desc">Price: High → Low</option>
+        <option value="beds-desc">Most Bedrooms First</option>
+      </select>
+    </div>
   </div>
+  <!-- Feature 4: Map container -->
+  <div id="js-map" class="map-container" style="display:none"></div>
   <div class="grid" id="js-grid"></div>
 </main>
 
 <button class="sticky-cta" onclick="openModal()">&#128172; Get Matched Free</button>
+<button class="back-to-top" id="js-back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">&#8679;</button>
 
 <!-- ── Lead modal ─────────────────────────────────────────── -->
 <div class="overlay" id="js-overlay" onclick="overlayClick(event)">
@@ -968,18 +1159,227 @@ let filters  = { agency: 'all', price: 'all', beds: 0, area: 'all', ptype: 'all'
 let sortKey  = 'price-asc';
 let pendingTitle = '';
 
+// Feature 5: Favorites
+let favs     = new Set(JSON.parse(localStorage.getItem('merida_favs') || '[]'));
+let showFavs = false;
+
+// Feature 6: Search
+let search = '';
+
+// Feature 8: Currency
+let currency = 'USD';
+const MXN_RATE = 17.5;
+
+// Feature 4: Map
+let mapInstance   = null;
+let mapMarkers    = [];
+let currentView   = 'grid';
+let leafletReady  = false;
+
+// Batch rendering
+const PAGE_SIZE   = 24;
+let currentList   = [];
+let currentPage   = 0;
+let scrollObserver = null;
+const AREA_COORDS = {
+  centro:      [20.9674, -89.6237],
+  norte:       [21.020,  -89.630],
+  beach:       [21.283,  -89.665],
+  surrounding: [20.900,  -89.650],
+  rental:      [20.960,  -89.615],
+  merida:      [20.967,  -89.624],
+};
+const DEFAULT_COORD = [20.9674, -89.6237];
+
+// ── Feature 1: URL state persistence ──────────────────────
+function pushState() {
+  const params = new URLSearchParams();
+  if (filters.agency !== 'all') params.set('agency', filters.agency);
+  if (filters.price  !== 'all') params.set('price',  filters.price);
+  if (filters.beds   > 0)       params.set('beds',   filters.beds);
+  if (filters.area   !== 'all') params.set('area',   filters.area);
+  if (filters.ptype  !== 'all') params.set('ptype',  filters.ptype);
+  if (search)                   params.set('q',      search);
+  if (sortKey !== 'price-asc')  params.set('sort',   sortKey);
+  if (showFavs)                 params.set('favs',   '1');
+  if (currency !== 'USD')       params.set('cur',    currency);
+  const qs = params.toString();
+  history.replaceState(null, '', qs ? '?' + qs : location.pathname);
+}
+
+function initFromURL() {
+  const params = new URLSearchParams(location.search);
+  if (params.has('agency')) filters.agency = params.get('agency');
+  if (params.has('price'))  filters.price  = params.get('price');
+  if (params.has('beds'))   filters.beds   = parseInt(params.get('beds'), 10) || 0;
+  if (params.has('area'))   filters.area   = params.get('area');
+  if (params.has('ptype'))  filters.ptype  = params.get('ptype');
+  if (params.has('q'))      search         = params.get('q');
+  if (params.has('sort'))   sortKey        = params.get('sort');
+  if (params.get('favs') === '1') showFavs = true;
+  if (params.has('cur'))    currency       = params.get('cur');
+
+  // Sync search input
+  const si = document.getElementById('js-search');
+  if (si && search) {
+    si.value = search;
+    const sc = document.getElementById('js-search-clear');
+    if (sc) sc.style.display = '';
+  }
+
+  // Sync sort select
+  const ss = document.getElementById('js-sort');
+  if (ss) ss.value = sortKey;
+
+  // Sync currency button
+  const ct = document.getElementById('js-cur-toggle');
+  if (ct) ct.textContent = currency === 'USD' ? '🇲🇽 MXN' : '🇺🇸 USD';
+
+  // Sync pill active classes from restored filter state
+  document.querySelectorAll('.pill[data-f]').forEach(b => {
+    const { f, v } = b.dataset;
+    let isActive = false;
+    if (f === 'agency') isActive = filters.agency === v;
+    else if (f === 'price') isActive = filters.price === v;
+    else if (f === 'beds')  isActive = String(filters.beds) === v;
+    else if (f === 'area')  isActive = filters.area === v;
+    else if (f === 'ptype') isActive = filters.ptype === v;
+    b.classList.toggle('active', isActive);
+  });
+
+  // Sync favs pill if showFavs
+  if (showFavs) {
+    const fp = document.getElementById('js-favs-pill');
+    if (fp) fp.classList.add('active');
+  }
+}
+
 // ── Helpers ────────────────────────────────────────────────
 function initials(name) {
   return name.split(' ').filter(Boolean).slice(0, 2).map(w => w[0].toUpperCase()).join('');
 }
 
+// Feature 8: Currency-aware fmtPrice
 function fmtPrice(n) {
   if (!n) return '<span style="color:#9CA3AF;font-size:15px">Price on Request</span>';
+  if (currency === 'MXN') {
+    return 'MX$' + Math.round(n * MXN_RATE).toLocaleString('es-MX') + '<small> MXN</small>';
+  }
   return '$' + n.toLocaleString('en-US') + '<small> USD</small>';
 }
 
 function safeUrl(url) {
   return url ? url.replace(/'/g, '%27') : '';
+}
+
+// ── Feature 8: Toggle currency ─────────────────────────────
+function toggleCurrency() {
+  currency = currency === 'USD' ? 'MXN' : 'USD';
+  const ct = document.getElementById('js-cur-toggle');
+  if (ct) ct.textContent = currency === 'USD' ? '🇲🇽 MXN' : '🇺🇸 USD';
+  render();
+  pushState();
+}
+
+// ── Feature 7: WhatsApp share ──────────────────────────────
+function shareWhatsApp(url, title, event) {
+  event && event.stopPropagation();
+  const decoded = decodeURIComponent(title);
+  const text = '🏡 Check out this property in Mérida:\n*' + decoded + '*\n' + (url || 'Contact agency for details');
+  window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+}
+
+// ── Feature 5: Favorites helpers ───────────────────────────
+function toggleFav(url, event) {
+  event && event.stopPropagation();
+  if (favs.has(url)) favs.delete(url);
+  else               favs.add(url);
+  localStorage.setItem('merida_favs', JSON.stringify([...favs]));
+  render();
+  pushState();
+}
+
+// ── Feature 4: Map helpers ─────────────────────────────────
+function coordForProp(p) {
+  const base = AREA_COORDS[p.area] || DEFAULT_COORD;
+  const scatter = () => (Math.random() - 0.5) * 0.016;
+  return [base[0] + scatter(), base[1] + scatter()];
+}
+
+function clearMapMarkers() {
+  mapMarkers.forEach(m => m.remove());
+  mapMarkers = [];
+}
+
+function plotMapMarkers(list) {
+  clearMapMarkers();
+  list.forEach(p => {
+    const [lat, lng] = coordForProp(p);
+    const priceLabel = p.price
+      ? (currency === 'MXN'
+          ? 'MX$' + Math.round(p.price * MXN_RATE).toLocaleString('es-MX')
+          : '$' + p.price.toLocaleString('en-US'))
+      : 'Price on Request';
+    const ag = AGENCIES[p.agency] || { label: p.agency };
+    const popup = `<div style="font-family:-apple-system,sans-serif;min-width:180px">
+      <div style="font-weight:700;font-size:13px;margin-bottom:4px">${p.title || 'Property'}</div>
+      <div style="font-size:14px;font-weight:800;color:#15803D;margin-bottom:4px">${priceLabel}</div>
+      <div style="font-size:11px;color:#6B7280;margin-bottom:8px">${ag.label}</div>
+      ${p.url ? `<a href="${p.url}" target="_blank" rel="noopener" style="display:inline-block;background:#1A3C5E;color:#fff;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;text-decoration:none">View Listing →</a>` : ''}
+    </div>`;
+    const marker = L.marker([lat, lng]).addTo(mapInstance).bindPopup(popup);
+    mapMarkers.push(marker);
+  });
+}
+
+function initMap() {
+  mapInstance = L.map('js-map').setView(DEFAULT_COORD, 12);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors',
+    maxZoom: 18,
+  }).addTo(mapInstance);
+}
+
+function setView(v) {
+  currentView = v;
+  const mapEl  = document.getElementById('js-map');
+  const gridEl = document.getElementById('js-grid');
+  const btnG   = document.getElementById('js-view-grid');
+  const btnM   = document.getElementById('js-view-map');
+
+  if (v === 'map') {
+    gridEl.style.display = 'none';
+    mapEl.style.display  = '';
+    btnG.classList.remove('active');
+    btnM.classList.add('active');
+
+    if (!leafletReady) {
+      // Lazy-load Leaflet CSS + JS on first map click
+      const link = document.createElement('link');
+      link.rel   = 'stylesheet';
+      link.href  = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+      document.head.appendChild(link);
+      const script  = document.createElement('script');
+      script.src    = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+      script.onload = () => {
+        leafletReady = true;
+        initMap();
+        plotMapMarkers(getFilteredList());
+      };
+      document.head.appendChild(script);
+    } else if (!mapInstance) {
+      initMap();
+      plotMapMarkers(getFilteredList());
+    } else {
+      mapInstance.invalidateSize();
+      plotMapMarkers(getFilteredList());
+    }
+  } else {
+    mapEl.style.display  = 'none';
+    gridEl.style.display = '';
+    btnG.classList.add('active');
+    btnM.classList.remove('active');
+  }
 }
 
 // ── Agency profile cards ───────────────────────────────────
@@ -1155,9 +1555,9 @@ function renderAgencyProfile() {
 // ── Property card ──────────────────────────────────────────
 function cardHTML(p) {
   const ag    = AGENCIES[p.agency] || { label: p.agency, color: '#555' };
-  const beds  = p.beds  ? `<span class="attr">&#127968; ${p.beds} bd</span>`  : '';
-  const baths = p.baths ? `<span class="attr">&#128703; ${p.baths} ba</span>` : '';
-  const loc   = p.location ? `<span class="attr">&#128205; ${p.location}</span>` : '';
+  const isLand = p.ptype === 'land';
+  const beds  = (!isLand && p.beds)  ? `<span class="attr">&#127968; ${p.beds} bd</span>`  : '';
+  const baths = (!isLand && p.baths) ? `<span class="attr">&#128703; ${p.baths} ba</span>` : '';
   const multi = p.also_at && p.also_at.length ? `<div class="multi-badge">Multi-Listed</div>` : '';
   const alsoAt = p.also_at && p.also_at.length ? `<div class="also-at">Also on: ${p.also_at.join(', ')}</div>` : '';
 
@@ -1170,6 +1570,14 @@ function cardHTML(p) {
     ? `<button class="btn-view" onclick="window.open('${safeUrl(p.url)}','_blank')">View Listing &#8594;</button>`
     : `<button class="btn-view" disabled>Contact Agency</button>`;
 
+  // Feature 7: WhatsApp share button
+  const shareBtn = `<button class="btn-share" title="Share on WhatsApp" onclick="shareWhatsApp('${safeUrl(p.url)}','${encodeURIComponent(p.title || '')}',event)">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+  </button>`;
+
+  // Feature 5: Fav button
+  const favBtn = `<button class="btn-fav ${favs.has(p.url) ? 'fav-active' : ''}" onclick="toggleFav('${safeUrl(p.url)}',event)">&#9829;</button>`;
+
   const lightBg = ag.color + '22';
   const imgTag  = p.img
     ? `<img src="${p.img}" alt="${p.title}" loading="lazy" onerror="this.style.display='none'">`
@@ -1177,36 +1585,149 @@ function cardHTML(p) {
 
   return `<article class="card">
     <div class="card-img" style="background:linear-gradient(135deg,${ag.color},${ag.color}99)">
-      ${imgTag}${multi}
+      ${imgTag}${favBtn}${multi}
       <div class="loc-label">${p.location || 'Mérida, Yucatán'}</div>
     </div>
     <div class="agency-bar" style="background:${ag.color}"></div>
     <div class="card-body">
       <div class="card-price">${fmtPrice(p.price)}</div>
       <div class="card-title">${p.title}</div>
-      <div class="card-attrs">${beds}${baths}${loc}</div>
+      <div class="card-attrs">${beds}${baths}</div>
       <div style="display:flex;align-items:center;flex-wrap:wrap;gap:4px">
         <div class="agency-chip" style="background:${lightBg};color:${ag.color}">${ag.label}</div>
         ${areaBadge}${typeBadge}
       </div>
       ${alsoAt}
     </div>
-    <div class="card-actions">${viewBtn}<button class="btn-ask" onclick="openModal('${encodeURIComponent(p.title)}')">Ask Agent</button></div>
+    <div class="card-actions">${viewBtn}${shareBtn}<button class="btn-ask" onclick="openModal('${encodeURIComponent(p.title)}')">Ask Agent</button></div>
   </article>`;
+}
+
+// ── Feature 2: Skeleton cards ──────────────────────────────
+function showSkeletons(n) {
+  const grid = document.getElementById('js-grid');
+  const sk = Array.from({length: n}, () => `
+    <div class="card-skeleton">
+      <div class="sk-img shimmer"></div>
+      <div class="sk-body">
+        <div class="sk-price shimmer"></div>
+        <div class="sk-title shimmer"></div>
+        <div class="sk-title2 shimmer"></div>
+        <div class="sk-attrs shimmer"></div>
+      </div>
+    </div>`).join('');
+  grid.innerHTML = sk;
+}
+
+// ── Shared filter logic (used by render + map) ─────────────
+function getFilteredList() {
+  const { agency, price, beds, area, ptype } = filters;
+
+  let list = PROPS.filter(p => {
+    if (agency !== 'all' && p.agency !== agency)         return false;
+    if (price  !== 'all' && p.bucket !== price)          return false;
+    if (beds   > 0       && (!p.beds || p.beds < beds))  return false;
+    if (area   !== 'all' && p.area   !== area)           return false;
+    if (ptype  !== 'all' && p.ptype  !== ptype)          return false;
+    return true;
+  });
+
+  // Feature 6: search filter
+  if (search) {
+    const q = search.toLowerCase();
+    list = list.filter(p =>
+      (p.title    || '').toLowerCase().includes(q) ||
+      (p.location || '').toLowerCase().includes(q)
+    );
+  }
+
+  // Feature 5: favs filter
+  if (showFavs) {
+    list = favs.size > 0 ? list.filter(p => favs.has(p.url)) : [];
+  }
+
+  return list;
+}
+
+// ── Feature 3: Pill counts ─────────────────────────────────
+function updatePillCounts() {
+  document.querySelectorAll('.pill[data-f][data-v]').forEach(btn => {
+    const { f, v } = btn.dataset;
+    if (v === 'all' || v === '0') return; // skip "All" pills
+
+    // Store base label on first call
+    if (!btn.dataset.baseLabel) {
+      // Strip any existing pill-count spans
+      const existing = btn.querySelector('.pill-count');
+      btn.dataset.baseLabel = existing
+        ? btn.textContent.replace(existing.textContent, '').trim()
+        : btn.textContent.trim();
+    }
+
+    // Count: apply ONLY this pill's filter on top of all other current filters
+    const savedVal = filters[f];
+    const savedBeds = filters.beds;
+
+    // Temporarily apply this pill's value
+    if (f === 'agency') filters.agency = v;
+    else if (f === 'price')  filters.price  = v;
+    else if (f === 'beds')   filters.beds   = parseInt(v, 10);
+    else if (f === 'area')   filters.area   = v;
+    else if (f === 'ptype')  filters.ptype  = v;
+
+    const count = getFilteredList().length;
+
+    // Restore
+    if (f === 'agency') filters.agency = savedVal;
+    else if (f === 'price')  filters.price  = savedVal;
+    else if (f === 'beds')   filters.beds   = savedBeds;
+    else if (f === 'area')   filters.area   = savedVal;
+    else if (f === 'ptype')  filters.ptype  = savedVal;
+
+    btn.innerHTML = btn.dataset.baseLabel + `<span class="pill-count">(${count})</span>`;
+  });
+
+  // Update favs pill count
+  const fp = document.getElementById('js-favs-pill');
+  if (fp) {
+    fp.textContent = '♥ Shortlist (' + favs.size + ')';
+  }
+}
+
+// ── Batch append ───────────────────────────────────────────
+function appendBatch() {
+  if (currentPage * PAGE_SIZE >= currentList.length) return;
+  const batch = currentList.slice(currentPage * PAGE_SIZE, (currentPage + 1) * PAGE_SIZE);
+  const grid  = document.getElementById('js-grid');
+  // Remove sentinel before appending
+  const old = document.getElementById('js-sentinel');
+  if (old) old.remove();
+  // Append cards
+  const frag = document.createDocumentFragment();
+  const tmp  = document.createElement('div');
+  tmp.innerHTML = batch.map(cardHTML).join('');
+  while (tmp.firstChild) frag.appendChild(tmp.firstChild);
+  grid.appendChild(frag);
+  currentPage++;
+  // Add sentinel if more remain
+  if (currentPage * PAGE_SIZE < currentList.length) {
+    const sentinel = document.createElement('div');
+    sentinel.id = 'js-sentinel';
+    sentinel.style.cssText = 'height:1px;grid-column:1/-1';
+    grid.appendChild(sentinel);
+    if (!scrollObserver) {
+      scrollObserver = new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting) appendBatch();
+      }, { rootMargin: '300px' });
+    }
+    scrollObserver.disconnect();
+    scrollObserver.observe(sentinel);
+  }
 }
 
 // ── Render ─────────────────────────────────────────────────
 function render() {
-  const { agency, price, beds, area, ptype } = filters;
-
-  let list = PROPS.filter(p => {
-    if (agency !== 'all' && p.agency !== agency)      return false;
-    if (price  !== 'all' && p.bucket !== price)       return false;
-    if (beds   > 0       && (!p.beds || p.beds < beds)) return false;
-    if (area   !== 'all' && p.area   !== area)        return false;
-    if (ptype  !== 'all' && p.ptype  !== ptype)       return false;
-    return true;
-  });
+  const list = getFilteredList();
 
   list.sort((a, b) => {
     if (sortKey === 'price-asc')  return (a.price || 9999999) - (b.price || 9999999);
@@ -1215,14 +1736,36 @@ function render() {
     return 0;
   });
 
+  currentList = list;
+  currentPage = 0;
+  if (scrollObserver) scrollObserver.disconnect();
+
   const grid = document.getElementById('js-grid');
-  grid.innerHTML = list.length
-    ? list.map(cardHTML).join('')
-    : '<div class="empty"><h3>No properties match</h3><p>Try adjusting the filters above.</p></div>';
+
+  if (showFavs && favs.size === 0) {
+    grid.innerHTML = '<div class="empty"><h3>No saved listings yet</h3><p>Click &#9829; on any property to save it to your shortlist.</p></div>';
+  } else if (list.length === 0) {
+    grid.innerHTML = '<div class="empty"><h3>No properties match</h3><p>Try adjusting the filters above.</p><button class="pill active" style="margin-top:16px;cursor:pointer" onclick="resetFilters()">&#10005; Reset Filters</button></div>';
+  } else {
+    grid.innerHTML = '';
+    appendBatch(); // renders first PAGE_SIZE cards immediately
+  }
 
   document.getElementById('js-vis').textContent   = list.length;
   document.getElementById('js-count').textContent = list.length + ' shown';
   document.getElementById('js-total').textContent = list.length;
+
+  // Defer pill counts so they never block the initial paint
+  if (typeof requestIdleCallback === 'function') {
+    requestIdleCallback(updatePillCounts, { timeout: 1000 });
+  } else {
+    setTimeout(updatePillCounts, 100);
+  }
+
+  // Feature 4: re-plot map if visible
+  if (currentView === 'map' && mapInstance) {
+    plotMapMarkers(list);
+  }
 }
 
 // ── Filter pill events ─────────────────────────────────────
@@ -1236,15 +1779,81 @@ document.querySelectorAll('.pill[data-f]').forEach(btn => {
     else if (f === 'beds')   filters.beds   = parseInt(v, 10);
     else if (f === 'area')   filters.area   = v;
     else if (f === 'ptype')  filters.ptype  = v;
+    // When changing agency away from favs, reset showFavs
+    if (f === 'agency' && showFavs) {
+      showFavs = false;
+      const fp = document.getElementById('js-favs-pill');
+      if (fp) fp.classList.remove('active');
+    }
+    updateFilterBadge();
     renderAgencyProfile();
     render();
+    pushState();
   });
 });
 
 document.getElementById('js-sort').addEventListener('change', e => {
   sortKey = e.target.value;
   render();
+  pushState();
 });
+
+// ── Feature 5: Favs pill (dynamically added) ───────────────
+(function addFavsPill() {
+  const agencyRow = document.querySelector('.filter-row-agency');
+  if (!agencyRow) return;
+  const btn = document.createElement('button');
+  btn.className = 'pill';
+  btn.id = 'js-favs-pill';
+  btn.textContent = '♥ Shortlist (' + favs.size + ')';
+  btn.addEventListener('click', () => {
+    showFavs = !showFavs;
+    if (showFavs) {
+      // Deactivate agency pills
+      document.querySelectorAll('.pill[data-f="agency"]').forEach(b => b.classList.remove('active'));
+      filters.agency = 'all';
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+      // Re-activate "All" agency pill
+      const allPill = document.querySelector('.pill[data-f="agency"][data-v="all"]');
+      if (allPill) allPill.classList.add('active');
+    }
+    updateFilterBadge();
+    renderAgencyProfile();
+    render();
+    pushState();
+  });
+  const allPillRef = agencyRow.querySelector('.pill[data-v="all"]');
+  if (allPillRef && allPillRef.nextSibling) {
+    agencyRow.insertBefore(btn, allPillRef.nextSibling);
+  } else {
+    agencyRow.appendChild(btn);
+  }
+})();
+
+// ── Feature 6: Search input events ────────────────────────
+(function wireSearch() {
+  const si = document.getElementById('js-search');
+  const sc = document.getElementById('js-search-clear');
+  if (!si) return;
+  si.addEventListener('input', () => {
+    search = si.value;
+    sc.style.display = search ? '' : 'none';
+    render();
+    pushState();
+  });
+})();
+
+function clearSearch() {
+  search = '';
+  const si = document.getElementById('js-search');
+  const sc = document.getElementById('js-search-clear');
+  if (si) si.value = '';
+  if (sc) sc.style.display = 'none';
+  render();
+  pushState();
+}
 
 // ── Modal ──────────────────────────────────────────────────
 function openModal(title) {
@@ -1271,9 +1880,71 @@ function submitLead(e) {
   document.getElementById('js-success').style.display = 'block';
 }
 
+// ── Reset all filters ──────────────────────────────────────
+function resetFilters() {
+  filters  = { agency: 'all', price: 'all', beds: 0, area: 'all', ptype: 'all' };
+  search   = '';
+  showFavs = false;
+  currency = 'USD';
+
+  // Reset search input
+  const si = document.getElementById('js-search');
+  const sc = document.getElementById('js-search-clear');
+  if (si) si.value = '';
+  if (sc) sc.style.display = 'none';
+
+  // Reset currency button
+  const ct = document.getElementById('js-cur-toggle');
+  if (ct) ct.textContent = '🇲🇽 MXN';
+
+  // Reset favs pill
+  const fp = document.getElementById('js-favs-pill');
+  if (fp) fp.classList.remove('active');
+
+  document.querySelectorAll('.pill[data-f]').forEach(b => {
+    const { f, v } = b.dataset;
+    b.classList.toggle('active', v === 'all' || v === '0');
+  });
+  updateFilterBadge();
+  renderAgencyProfile();
+  render();
+  pushState();
+}
+
+// ── Active filter badge & chips ────────────────────────────
+const FILTER_LABELS = {
+  agency: v => v, price: v => ({under200:'<$200K',['200to500']:'$200–500K',['500to1m']:'$500K–1M',over1m:'$1M+'}[v]||v),
+  beds: v => v+'+ bd', area: v => ({beach:'Beach',norte:'North',centro:'Centro',surrounding:'Surrounding',rental:'Rental/Inv',merida:'Mérida Gen'}[v]||v),
+  ptype: v => ({house:'House',condo:'Condo',land:'Land',commercial:'Commercial'}[v]||v)
+};
+function updateFilterBadge() {
+  const active = Object.entries(filters).filter(([k,v]) => v !== 'all' && v !== 0);
+  const badge  = document.getElementById('js-filter-badge');
+  const pills  = document.getElementById('js-active-pills');
+  if (badge) { badge.textContent = active.length || ''; badge.style.display = active.length ? '' : 'none'; }
+  if (pills) { pills.innerHTML = active.map(([k,v]) => `<span class="filter-active-chip">${FILTER_LABELS[k]?.(v)||v}</span>`).join(''); }
+}
+
+// ── Mobile filter toggle ───────────────────────────────────
+document.getElementById('js-filter-toggle')?.addEventListener('click', () => {
+  document.getElementById('js-filter-rows')?.classList.toggle('open');
+});
+
+// ── Back to top ────────────────────────────────────────────
+window.addEventListener('scroll', () => {
+  document.getElementById('js-back-top')?.classList.toggle('visible', window.scrollY > 600);
+}, { passive: true });
+
 // ── Init ───────────────────────────────────────────────────
-renderAgents();
+// Feature 2: Show skeletons before first render
+showSkeletons(9);
+
+// Feature 1: Read URL state and sync UI
+initFromURL();
+
+renderAgencyProfile();
 render();
+updateFilterBadge();
 
 // Hero beachfront CTA
 document.getElementById('btnBeachfront')?.addEventListener('click', function() {
