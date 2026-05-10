@@ -24,6 +24,8 @@ AGENCY_META = {
     "meridaliving":      {"label": "Merida Living",           "color": "#0369A1"},
     "yucatanbeach":      {"label": "Yucatán Beach & City",    "color": "#0F766E"},
     "yucatanbeachhomes": {"label": "Yucatán Beach Homes",     "color": "#C2410C"},
+    "balam":             {"label": "Balam Group",             "color": "#5B21B6"},
+    "meridareg":         {"label": "Mérida Real Estate Group","color": "#BE123C"},
 }
 
 
