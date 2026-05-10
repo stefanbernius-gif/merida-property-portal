@@ -80,6 +80,8 @@ _NON_PROPERTY_URL = re.compile(
     r'|/city/[^/]+/?(?:$|[?#])'
     r'|/area/[^/]+/?(?:$|[?#])'
     r'|/action/[^/]+/?(?:$|[?#])'
+    r'|/listings/tagged/'
+    r'|/a/[^/]+/?(?:$|[?#])'
     r'|list\.html',
     re.IGNORECASE,
 )
