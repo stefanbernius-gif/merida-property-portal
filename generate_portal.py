@@ -47,19 +47,24 @@ def load_and_process(csv_path):
 
             agency = row["agency"]
             meta = AGENCY_META.get(agency, {"label": agency.title(), "color": "#555"})
+            title    = row["title"].strip()
+            location = row["location"].strip() if row["location"] else ""
+            url      = row["url"].strip()
             props.append({
                 "agency":   agency,
                 "label":    meta["label"],
                 "color":    meta["color"],
-                "title":    row["title"].strip(),
+                "title":    title,
                 "price":    price_usd,
                 "beds":     int(row["bedrooms"]) if row["bedrooms"] else None,
                 "baths":    int(row["bathrooms"]) if row["bathrooms"] else None,
-                "location": row["location"].strip() if row["location"] else "",
-                "url":      row["url"].strip(),
+                "location": location,
+                "url":      url,
                 "img":      row.get("image_url", "").strip(),
                 "dup":      row["duplicate_flag"],
                 "also_at":  [],
+                "area":     area_bucket(title, location, url),
+                "ptype":    prop_type_bucket(title, url),
             })
     return props
 
@@ -91,6 +96,57 @@ def price_bucket(price):
     if price < 500000:  return "200to500"
     if price < 1000000: return "500to1m"
     return "over1m"
+
+
+AREA_KEYWORDS = {
+    "beach":       ["progreso", "chelem", "telchac", "chicxulub", "chuburna puerto",
+                    "celestun", "sisal", "yucalpeten", "beachfront", "beach front",
+                    "oceanfront", "ocean front", "coastal", "costa bonita", "marina",
+                    "san benito", "uaymitun", "tankah", "playa", "seafront"],
+    "norte":       ["north merida", "north mérida", "norte", "altabrisa", "temozon",
+                    "temozón", "cabo norte", "cholul", "conkal", "dzitya", "arborea",
+                    "santa maria chi", "gran provincia", "caucel", "ciudad caucel",
+                    "las americas", "montejo", "san ramon", "francisco de montejo",
+                    "la ceiba", "yucatan country club", "santa fe", "pensiones"],
+    "centro":      ["centro", "colonial", "downtown", "mejorada", "garcia gineres",
+                    "san sebastian", "ermita", "historico", "historic", "itzimna",
+                    "paseo de montejo", "santa ana", "santiago", "benito juarez",
+                    "barrio", "sam canche", "la plancha", "san cristobal", "jesús"],
+    "surrounding": ["hacienda", "ranch", "rancho", "valladolid", "izamal", "motul",
+                    "ticul", "oxkutzcab", "muna", "ucu", "hunucma", "uman", "kikteil",
+                    "xcanatun", "hocaba", "sotuta", "tixkokob", "xmatkuil", "tekanto",
+                    "acanceh", "cenote", "golf course", "pueblo", "conkal", "baca",
+                    "tepakan", "chicxulub pueblo", "countryside", "rural"],
+    "rental":      ["for rent", "income potential", "airbnb", "boutique hotel",
+                    "investment property", "income property", "student suite",
+                    "rental income", "renta", "en renta"],
+}
+
+PROP_TYPE_KEYWORDS = {
+    "land":       ["land", "lot", "lote", "terreno", "solar", "homesite", "acreage",
+                   "residential lot", "beachfront lot", "land parcel", "plot",
+                   "buildable", "lotification", "lots for sale"],
+    "condo":      ["condo", "condominium", "penthouse", "pent house", "apartment",
+                   "suite", "studio", "flat", "departamento", "depa", "ph "],
+    "commercial": ["hotel", "boutique hotel", "commercial", "business", "office",
+                   "warehouse", "bodega", "retail", "restaurant", "hostel", "hostal"],
+}
+
+
+def area_bucket(title, location, url):
+    haystack = f"{title} {location} {url}".lower()
+    for area in ["beach", "norte", "centro", "surrounding", "rental"]:
+        if any(kw in haystack for kw in AREA_KEYWORDS[area]):
+            return area
+    return "merida"
+
+
+def prop_type_bucket(title, url):
+    haystack = f"{title} {url}".lower()
+    for ptype in ["land", "condo", "commercial"]:
+        if any(kw in haystack for kw in PROP_TYPE_KEYWORDS[ptype]):
+            return ptype
+    return "house"
 
 
 def build_html(props_json, total, updated, agency_list, agency_meta_js):
@@ -153,6 +209,18 @@ button{{cursor:pointer;font-family:var(--font)}}
 .filter-row{{display:flex;gap:6px;align-items:center;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:1px}}
 .filter-row::-webkit-scrollbar{{display:none}}
 .filter-row-agency{{border-bottom:1px solid var(--border);padding-bottom:7px}}
+.filter-row-area{{border-top:1px solid var(--border);padding-top:6px}}
+.area-tag{{display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;text-transform:uppercase;letter-spacing:.4px;margin-top:2px}}
+.area-beach{{background:#DBEAFE;color:#1D4ED8}}
+.area-norte{{background:#DCFCE7;color:#15803D}}
+.area-centro{{background:#FEF3C7;color:#92400E}}
+.area-surrounding{{background:#F3E8FF;color:#7E22CE}}
+.area-rental{{background:#FFE4E6;color:#BE123C}}
+.area-merida{{background:#F3F4F6;color:#4B5563}}
+.type-tag{{display:inline-block;font-size:10px;font-weight:600;padding:2px 7px;border-radius:8px;text-transform:uppercase;letter-spacing:.3px;margin-top:2px;margin-left:4px}}
+.type-land{{background:#FEF9C3;color:#713F12}}
+.type-condo{{background:#E0E7FF;color:#3730A3}}
+.type-commercial{{background:#FCE7F3;color:#9D174D}}
 .filter-lbl{{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;flex-shrink:0;padding-right:2px}}
 .filter-sep{{width:1px;height:22px;background:var(--border);flex-shrink:0;margin:0 4px}}
 .pill{{padding:5px 13px;border-radius:20px;font-size:12.5px;font-weight:500;border:1.5px solid var(--border);background:#fff;color:var(--text);transition:all .15s;white-space:nowrap;flex-shrink:0}}
@@ -242,6 +310,23 @@ button{{cursor:pointer;font-family:var(--font)}}
       <button class="pill active" data-f="agency" data-v="all">All</button>
 {agency_pills}
     </div>
+    <div class="filter-row filter-row-area">
+      <span class="filter-lbl">Area</span>
+      <button class="pill active" data-f="area" data-v="all">All Areas</button>
+      <button class="pill" data-f="area" data-v="centro">&#127962; Centro</button>
+      <button class="pill" data-f="area" data-v="norte">&#9650; North Mérida</button>
+      <button class="pill" data-f="area" data-v="beach">&#127944; Beach / Coast</button>
+      <button class="pill" data-f="area" data-v="surrounding">&#127963; Surrounding</button>
+      <button class="pill" data-f="area" data-v="rental">&#128176; Rental / Investment</button>
+      <button class="pill" data-f="area" data-v="merida">&#127968; Mérida General</button>
+      <div class="filter-sep"></div>
+      <span class="filter-lbl">Type</span>
+      <button class="pill active" data-f="ptype" data-v="all">All Types</button>
+      <button class="pill" data-f="ptype" data-v="house">&#127968; House / Villa</button>
+      <button class="pill" data-f="ptype" data-v="condo">&#127757; Condo / Apt</button>
+      <button class="pill" data-f="ptype" data-v="land">&#127795; Land / Lot</button>
+      <button class="pill" data-f="ptype" data-v="commercial">&#127970; Commercial</button>
+    </div>
     <div class="filter-row">
       <span class="filter-lbl">Price</span>
       <button class="pill active" data-f="price" data-v="all">All</button>
@@ -328,7 +413,7 @@ button{{cursor:pointer;font-family:var(--font)}}
 const PROPS = {props_json};
 const AGENCIES = {agency_meta_js};
 
-let F = {{agency:"all", price:"all", beds:0}};
+let F = {{agency:"all", price:"all", beds:0, area:"all", ptype:"all"}};
 let sortKey = "price-asc";
 let pending = "";
 
@@ -344,6 +429,10 @@ function cardHTML(p){{
   const loc   = p.location ? `<span class="attr">&#128205; ${{p.location}}</span>` : "";
   const multi = p.also_at && p.also_at.length ? `<div class="multi-badge">Multi-Listed</div>` : "";
   const alsoAt = p.also_at && p.also_at.length ? `<div class="also-at">Also on: ${{p.also_at.join(", ")}}</div>` : "";
+  const areaLabels = {{beach:"Beach",norte:"North",centro:"Centro",surrounding:"Surrounding",rental:"Rental",merida:"Mérida"}};
+  const typeLabels = {{house:"House",condo:"Condo",land:"Land",commercial:"Commercial"}};
+  const areaBadge = p.area ? `<span class="area-tag area-${{p.area}}">${{areaLabels[p.area]||p.area}}</span>` : "";
+  const typeBadge = p.ptype && p.ptype !== "house" ? `<span class="type-tag type-${{p.ptype}}">${{typeLabels[p.ptype]||p.ptype}}</span>` : "";
   const viewBtn = p.url
     ? `<button class="btn-view" onclick="window.open('${{p.url.replace(/'/g,"\\'")}}','_blank')">View Listing &#8594;</button>`
     : `<button class="btn-view" disabled>No Link</button>`;
@@ -361,7 +450,10 @@ function cardHTML(p){{
     <div class="card-price">${{fmtPrice(p.price)}}</div>
     <div class="card-title">${{p.title}}</div>
     <div class="card-attrs">${{beds}}${{baths}}${{loc}}</div>
-    <div class="agency-chip" style="background:${{lightBg}};color:${{ag.color}}">${{ag.label}}</div>
+    <div style="display:flex;align-items:center;flex-wrap:wrap;gap:4px">
+      <div class="agency-chip" style="background:${{lightBg}};color:${{ag.color}}">${{ag.label}}</div>
+      ${{areaBadge}}${{typeBadge}}
+    </div>
     ${{alsoAt}}
   </div>
   <div class="card-actions">${{viewBtn}}<button class="btn-ask" onclick="openModal('${{encodeURIComponent(p.title)}}')">Ask Agent</button></div>
@@ -370,9 +462,11 @@ function cardHTML(p){{
 
 function render(){{
   let list = PROPS.filter(p => {{
-    if(F.agency !== "all" && p.agency !== F.agency) return false;
-    if(F.price  !== "all" && p.bucket !== F.price)  return false;
-    if(F.beds > 0 && (!p.beds || p.beds < F.beds))  return false;
+    if(F.agency !== "all" && p.agency !== F.agency)   return false;
+    if(F.price  !== "all" && p.bucket !== F.price)    return false;
+    if(F.beds > 0 && (!p.beds || p.beds < F.beds))    return false;
+    if(F.area   !== "all" && p.area   !== F.area)     return false;
+    if(F.ptype  !== "all" && p.ptype  !== F.ptype)    return false;
     return true;
   }});
   list.sort((a,b) => {{
@@ -395,9 +489,11 @@ document.querySelectorAll(".pill[data-f]").forEach(btn => {{
     const f = btn.dataset.f, v = btn.dataset.v;
     document.querySelectorAll(`.pill[data-f="${{f}}"]`).forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
-    if(f === "agency") F.agency = v;
-    else if(f === "price") F.price = v;
-    else if(f === "beds") F.beds = parseInt(v);
+    if(f === "agency")      F.agency = v;
+    else if(f === "price")  F.price  = v;
+    else if(f === "beds")   F.beds   = parseInt(v);
+    else if(f === "area")   F.area   = v;
+    else if(f === "ptype")  F.ptype  = v;
     render();
   }});
 }});
