@@ -1,0 +1,7 @@
+*_crawl_full.json
+merida-portal.html
+merida-competitor-property-comparison.html
+*.csv
+.env
+__pycache__/
+*.pyc
