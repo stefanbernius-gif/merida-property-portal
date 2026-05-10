@@ -42,7 +42,7 @@ img  { display: block; }
 .hero-bg {
   position: absolute;
   inset: 0;
-  background-image: url('https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=1800&q=80');
+  background-image: url('https://images.unsplash.com/photo-1516426122078-c23e76319801?w=1800&q=80');
   background-size: cover;
   background-position: center 55%;
   transform: scale(1.03);
@@ -688,14 +688,14 @@ img  { display: block; }
     </p>
 
     <div class="hero-cta-row">
-      <a class="btn-primary" href="#grid">
+      <a class="btn-primary" href="#js-grid" onclick="document.getElementById('js-grid').scrollIntoView({behavior:'smooth'});return false;">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M7 13A6 6 0 1 0 7 1a6 6 0 0 0 0 12zM15 15l-3.5-3.5" stroke="#0F2942" stroke-width="2" stroke-linecap="round"/></svg>
         Browse All Listings
       </a>
-      <a class="btn-ghost" href="#grid" onclick="document.querySelector('[data-v=\\'yucatanbeach\\']')?.click()">
+      <button class="btn-ghost" id="btnBeachfront">
         <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2 7.5h11M8.5 3l4 4.5-4 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
         View Beachfront Picks
-      </a>
+      </button>
     </div>
 
     <div class="hero-trust">
@@ -1053,6 +1053,13 @@ function submitLead(e) {
 // ── Init ───────────────────────────────────────────────────
 renderAgents();
 render();
+
+// Hero beachfront CTA
+document.getElementById('btnBeachfront')?.addEventListener('click', function() {
+  var pill = document.querySelector('.pill[data-f="agency"][data-v="yucatanbeach"]');
+  if (pill) { pill.click(); }
+  document.getElementById('js-grid').scrollIntoView({behavior: 'smooth'});
+});
 
 // Hero image loaded → trigger subtle zoom-out
 (function(){
