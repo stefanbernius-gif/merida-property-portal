@@ -86,6 +86,8 @@ _NON_PROPERTY_URL = re.compile(
     re.IGNORECASE,
 )
 _ROOT_URL_RE = re.compile(r'^https?://[^/]+/?$')
+# Merida Living uses /{id}/meridamexicorealestate for every individual listing — title is always generic
+_MERIDALIVING_PROP_RE = re.compile(r'/\d+/meridamexicorealestate', re.IGNORECASE)
 _SOLD_TITLE    = re.compile(r'\bSOLD\b|\bUNDER\s+CONTRACT\b|\bPENDING\b|\bOFF\s+MARKET\b', re.IGNORECASE)
 # Titles that are clearly agency/site names rather than individual property listings
 _GENERIC_TITLE = re.compile(
@@ -155,8 +157,9 @@ def load_properties(csv_path: Path) -> list[dict]:
             # Never show sold / under-contract listings
             if _SOLD_TITLE.search(row["title"]):
                 continue
-            # Skip generic agency/site-name titles (not individual listings)
-            if _GENERIC_TITLE.match(row["title"].strip()):
+            # Skip generic agency/site-name titles — but exempt Merida Living property URLs
+            # (their SPA always sets the page title to "Merida Living Real Estate")
+            if _GENERIC_TITLE.match(row["title"].strip()) and not _MERIDALIVING_PROP_RE.search(url):
                 continue
 
             price_usd = None
