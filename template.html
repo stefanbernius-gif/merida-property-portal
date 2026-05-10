@@ -503,9 +503,9 @@ img  { display: block; }
 .empty { grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--muted); }
 .empty h3 { font-size: 20px; color: var(--text); margin-bottom: 8px; }
 
-/* ── Agents section ───────────────────────────────────────── */
-.agents-section { margin-bottom: 28px; }
-.agents-section h3 {
+/* ── Agency profile section (3-card layout) ───────────────── */
+.agency-section { margin-bottom: 28px; }
+.agency-section-header {
   font-size: 13px;
   font-weight: 700;
   color: var(--muted);
@@ -515,74 +515,168 @@ img  { display: block; }
   padding-bottom: 8px;
   border-bottom: 1px solid var(--border);
 }
-.agents-grid {
+.agency-cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 16px;
   margin-bottom: 8px;
 }
-.agent-card {
+@media (min-width: 900px) {
+  .agency-cards-grid { grid-template-columns: repeat(3, 1fr); }
+}
+.agency-card {
   background: #fff;
   border-radius: var(--r);
   box-shadow: var(--shadow);
-  padding: 20px 18px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 10px;
-  transition: transform .2s, box-shadow .2s;
   position: relative;
   overflow: hidden;
+  transition: transform .2s, box-shadow .2s;
 }
-.agent-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
+.agency-card:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(0,0,0,.12); }
+.agency-card-top-border {
   height: 4px;
-  background: var(--agent-color, var(--navy));
+  width: 100%;
+  background: var(--agency-color, var(--navy));
 }
-.agent-card:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(0,0,0,.12); }
-.agent-avatar   { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; border: 3px solid var(--border); }
-.agent-initials {
-  width: 72px; height: 72px;
-  border-radius: 50%;
+.agency-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px 10px;
+  border-bottom: 1px solid var(--border);
+}
+.agency-card-icon {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: var(--agency-color-light, #EFF6FF);
   display: flex; align-items: center; justify-content: center;
-  font-size: 22px; font-weight: 800; color: #fff; flex-shrink: 0;
+  flex-shrink: 0;
 }
-.agent-name  { font-size: 15px; font-weight: 700; color: var(--text); line-height: 1.2; }
-.agent-title { font-size: 12px; color: var(--muted); margin-top: -4px; }
-.agent-exp   { font-size: 12px; color: var(--muted); }
-.agent-certs { display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; }
+.agency-card-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .6px;
+}
+.agency-card-body { padding: 16px 18px; flex: 1; display: flex; flex-direction: column; gap: 12px; }
+
+/* Contact card specifics */
+.contact-person-name { font-size: 16px; font-weight: 700; color: var(--text); line-height: 1.2; }
+.contact-person-title { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.contact-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.4;
+}
+.contact-row a { color: var(--navy); }
+.contact-row a:hover { text-decoration: underline; }
+.contact-row-icon {
+  width: 16px; height: 16px;
+  flex-shrink: 0;
+  margin-top: 1px;
+  color: var(--muted);
+}
+.lang-pills { display: flex; gap: 4px; flex-wrap: wrap; }
+.lang-tag {
+  font-size: 11px; padding: 2px 9px; border-radius: 10px;
+  background: var(--bg); color: var(--muted); border: 1px solid var(--border);
+}
+.btn-whatsapp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 11px 0;
+  background: #25D366;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  margin-top: auto;
+  transition: background .15s, transform .15s;
+}
+.btn-whatsapp:hover { background: #1ebe5a; transform: translateY(-1px); }
+
+/* About card specifics */
+.about-summary { font-size: 13px; color: var(--muted); line-height: 1.6; }
+.about-stats-strip {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  background: #F8F7F5;
+  border-radius: 8px;
+  padding: 12px;
+  margin-top: auto;
+}
+.stat-item-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .4px; color: var(--muted); margin-bottom: 2px; }
+.stat-item-value { font-size: 14px; font-weight: 700; color: var(--navy); line-height: 1.2; }
+.stat-item-value.no-data { font-size: 12px; color: var(--muted); font-weight: 400; }
+.about-certs { display: flex; flex-wrap: wrap; gap: 5px; }
 .cert-badge {
   font-size: 10px; font-weight: 700; padding: 2px 8px;
   border-radius: 8px; background: #EFF6FF; color: #1D4ED8;
   border: 1px solid #BFDBFE; text-transform: uppercase; letter-spacing: .3px;
 }
-.cert-badge.ampi { background: #F0FDF4; color: #15803D; border-color: #BBF7D0; }
-.cert-badge.nar  { background: #FEF3C7; color: #92400E; border-color: #FDE68A; }
-.agent-langs { display: flex; gap: 4px; flex-wrap: wrap; justify-content: center; }
-.lang-tag {
-  font-size: 11px; padding: 2px 8px; border-radius: 10px;
-  background: var(--bg); color: var(--muted); border: 1px solid var(--border);
+.cert-badge.ampi     { background: #F0FDF4; color: #15803D; border-color: #BBF7D0; }
+.cert-badge.nar      { background: #FEF3C7; color: #92400E; border-color: #FDE68A; }
+.cert-badge.christies { background: #FFF1F2; color: #9F1239; border-color: #FECDD3; }
+
+/* Trust card specifics */
+.trust-rating-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
-.agent-bio {
-  font-size: 12px; color: var(--muted); line-height: 1.5;
-  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+.trust-rating-num {
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1;
 }
-.agent-actions { display: flex; gap: 6px; width: 100%; margin-top: auto; }
-.btn-agent-contact {
-  flex: 1; padding: 8px 0; background: var(--navy);
-  color: #fff; border: none; border-radius: 7px;
-  font-size: 12px; font-weight: 600; transition: background .15s;
+.trust-stars {
+  display: flex;
+  gap: 2px;
+  color: #F3C13A;
 }
-.btn-agent-contact:hover { background: #2563EB; }
-.btn-agent-site {
-  padding: 8px 10px; background: transparent;
-  color: var(--navy); border: 1.5px solid var(--navy);
-  border-radius: 7px; font-size: 12px; font-weight: 600; transition: all .15s;
+.trust-reviews-link {
+  font-size: 12px;
+  color: var(--navy);
+  display: block;
+  margin-top: 2px;
 }
-.btn-agent-site:hover { background: var(--navy); color: #fff; }
+.trust-reviews-link:hover { text-decoration: underline; }
+.trust-review {
+  background: #F8F7F5;
+  border-radius: 8px;
+  padding: 11px 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.trust-review-text {
+  font-size: 12px;
+  color: var(--text);
+  line-height: 1.5;
+  font-style: italic;
+}
+.trust-review-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.trust-review-author { font-size: 11px; font-weight: 700; color: var(--muted); }
+.trust-review-stars  { font-size: 11px; color: #F3C13A; letter-spacing: 1px; }
 
 /* ── Sticky CTA ───────────────────────────────────────────── */
 .sticky-cta {
@@ -782,9 +876,9 @@ img  { display: block; }
 
 <!-- ── Main content ────────────────────────────────────────── -->
 <main class="main">
-  <div id="js-agents-section" class="agents-section hidden">
-    <h3 id="js-agents-heading">Meet the Team</h3>
-    <div class="agents-grid" id="js-agents-grid"></div>
+  <div id="js-agency-section" class="agency-section hidden">
+    <div class="agency-section-header" id="js-agency-heading">Agency Profile</div>
+    <div class="agency-cards-grid" id="js-agency-cards"></div>
   </div>
   <div class="results-bar">
     <h2><strong id="js-vis">0</strong> properties</h2>
@@ -853,9 +947,9 @@ img  { display: block; }
 
 <!-- ── App data (injected by generate_portal.py) ──────────── -->
 <script>
-const PROPS   = {{PROPS_JSON}};
-const AGENCIES = {{AGENCIES_JSON}};
-const AGENTS  = {{AGENTS_JSON}};
+const PROPS            = {{PROPS_JSON}};
+const AGENCIES         = {{AGENCIES_JSON}};
+const AGENCY_PROFILES  = {{AGENCY_PROFILES_JSON}};
 </script>
 
 <!-- ── App logic ───────────────────────────────────────────── -->
@@ -879,55 +973,173 @@ function safeUrl(url) {
   return url ? url.replace(/'/g, '%27') : '';
 }
 
-// ── Agent cards ────────────────────────────────────────────
-function agentCardHTML(agent, agencyColor) {
-  const certs = (agent.certs || []).map(c => {
-    const cls = c.toLowerCase().includes('ampi') ? 'ampi' : c.toLowerCase().includes('nar') ? 'nar' : '';
-    return `<span class="cert-badge ${cls}">${c}</span>`;
-  }).join('');
+// ── Agency profile cards ───────────────────────────────────
+function fmtStat(n) {
+  if (n == null) return null;
+  if (n >= 1000000) return '$' + Math.round(n / 100000) / 10 + 'M';
+  return '$' + Math.round(n / 1000) + 'K';
+}
 
-  const langs = (agent.languages || []).map(l => `<span class="lang-tag">${l}</span>`).join('');
+function starsHTML(rating) {
+  const full    = Math.floor(rating);
+  const hasHalf = rating - full >= 0.5;
+  let out = '';
+  for (let i = 0; i < full; i++) {
+    out += '<svg width="16" height="16" viewBox="0 0 16 16" fill="#F3C13A"><path d="M8 1l1.8 5H15l-4.2 3 1.6 5L8 11.2 3.6 14l1.6-5L1 6h5.2L8 1z"/></svg>';
+  }
+  if (hasHalf) {
+    out += '<svg width="16" height="16" viewBox="0 0 16 16"><defs><linearGradient id="hg"><stop offset="50%" stop-color="#F3C13A"/><stop offset="50%" stop-color="#D1D5DB"/></linearGradient></defs><path d="M8 1l1.8 5H15l-4.2 3 1.6 5L8 11.2 3.6 14l1.6-5L1 6h5.2L8 1z" fill="url(#hg)"/></svg>';
+  }
+  return out;
+}
 
-  const avatar = agent.photo
-    ? `<img class="agent-avatar" src="${agent.photo}" alt="${agent.name}" loading="lazy" onerror="this.style.display='none'">`
-    : `<div class="agent-initials" style="background:${agencyColor}">${initials(agent.name)}</div>`;
+function reviewStarsHTML(r) {
+  return Array.from({length: 5}, (_, i) => i < r ? '&#9733;' : '&#9734;').join('');
+}
 
-  const exp     = agent.years_exp ? `<span class="agent-exp">${agent.years_exp}+ years experience</span>` : '';
-  const bio     = agent.bio       ? `<p class="agent-bio">${agent.bio}</p>` : '';
-  const contact = agent.email
-    ? `<button class="btn-agent-contact" onclick="window.location='mailto:${agent.email}?subject=Property Inquiry'">Email Agent</button>`
-    : `<button class="btn-agent-contact" onclick="openModal('')">Enquire</button>`;
-  const site    = agent.website
-    ? `<button class="btn-agent-site" onclick="window.open('${agent.website}','_blank')">Website</button>`
-    : '';
+function certClass(c) {
+  const l = c.toLowerCase();
+  if (l.includes('ampi'))     return 'ampi';
+  if (l.includes('nar'))      return 'nar';
+  if (l.includes('christie')) return 'christies';
+  return '';
+}
 
-  return `<div class="agent-card" style="--agent-color:${agencyColor}">
-    ${avatar}
-    <div class="agent-name">${agent.name}</div>
-    <div class="agent-title">${agent.title}</div>
-    ${exp}
-    <div class="agent-certs">${certs}</div>
-    <div class="agent-langs">${langs}</div>
-    ${bio}
-    <div class="agent-actions">${contact}${site}</div>
+function buildContactCard(profile, color) {
+  const c = profile.contact;
+  const langs = (c.languages || []).map(l => `<span class="lang-tag">${l}</span>`).join('');
+  const waMsg = encodeURIComponent("Hi, I found your agency on the Mérida Property Portal and I'm interested in learning more.");
+  const waUrl = `https://wa.me/${c.whatsapp}?text=${waMsg}`;
+  const lightColor = color + '18';
+
+  return `<div class="agency-card" style="--agency-color:${color};--agency-color-light:${lightColor}">
+    <div class="agency-card-top-border"></div>
+    <div class="agency-card-header">
+      <div class="agency-card-icon">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="${color}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M2 14c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg>
+      </div>
+      <div class="agency-card-label">Contact</div>
+    </div>
+    <div class="agency-card-body">
+      <div>
+        <div class="contact-person-name">${c.person}</div>
+        <div class="contact-person-title">${c.title}</div>
+      </div>
+      <div class="contact-row">
+        <svg class="contact-row-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2C5.8 2 4 3.8 4 6c0 3 4 8 4 8s4-5 4-8c0-2.2-1.8-4-4-4z"/><circle cx="8" cy="6" r="1.5"/></svg>
+        <span>${c.address}</span>
+      </div>
+      <div class="contact-row">
+        <svg class="contact-row-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 10.7c-1.2 0-2.3-.2-3.4-.5-.3-.1-.7 0-.9.3l-1.5 1.5c-1.9-1-3.5-2.6-4.5-4.5l1.5-1.5c.3-.3.4-.6.3-.9A9 9 0 0 1 5.3 2H2C1.4 2 1 2.4 1 3 1 9.6 6.4 15 13 15c.6 0 1-.4 1-1v-3.3c0-.6-.4-1-1-1z"/></svg>
+        <a href="tel:${c.phone}">${c.phone}</a>
+      </div>
+      <div class="contact-row">
+        <svg class="contact-row-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="14" height="10" rx="1.5"/><path d="M1 5l7 5 7-5"/></svg>
+        <a href="mailto:${c.email}">${c.email}</a>
+      </div>
+      <div class="lang-pills">${langs}</div>
+      <a class="btn-whatsapp" href="${waUrl}" target="_blank" rel="noopener">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+        WhatsApp
+      </a>
+    </div>
   </div>`;
 }
 
-function renderAgents() {
-  const section  = document.getElementById('js-agents-section');
-  const grid     = document.getElementById('js-agents-grid');
-  const heading  = document.getElementById('js-agents-heading');
+function buildAboutCard(profile, color) {
+  const a = profile.about;
+  const s = profile.stats;
+  const lightColor = color + '18';
+
+  const certs = (a.certs || []).map(c => `<span class="cert-badge ${certClass(c)}">${c}</span>`).join('');
+
+  const countVal   = s.count > 0 ? s.count + ' listings' : null;
+  const rangeVal   = (s.min_price != null && s.max_price != null) ? fmtStat(s.min_price) + ' – ' + fmtStat(s.max_price) : null;
+  const avgVal     = s.avg_price != null ? '~' + fmtStat(s.avg_price) + ' avg' : null;
+
+  function statCell(label, val) {
+    return `<div>
+      <div class="stat-item-label">${label}</div>
+      <div class="stat-item-value${val ? '' : ' no-data'}">${val || 'N/A'}</div>
+    </div>`;
+  }
+
+  return `<div class="agency-card" style="--agency-color:${color};--agency-color-light:${lightColor}">
+    <div class="agency-card-top-border"></div>
+    <div class="agency-card-header">
+      <div class="agency-card-icon">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="${color}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="12" height="12" rx="1.5"/><path d="M5 8h6M5 5.5h6M5 10.5h4"/></svg>
+      </div>
+      <div class="agency-card-label">About</div>
+    </div>
+    <div class="agency-card-body">
+      <p class="about-summary">${a.summary}</p>
+      ${certs ? `<div class="about-certs">${certs}</div>` : ''}
+      <div class="about-stats-strip">
+        ${statCell('Listings', countVal)}
+        ${statCell('Price Range', rangeVal)}
+        ${statCell('Avg Price', avgVal)}
+        ${statCell('Market', 'Mérida, YUC')}
+      </div>
+    </div>
+  </div>`;
+}
+
+function buildTrustCard(profile, color) {
+  const t = profile.trust;
+  const lightColor = color + '18';
+
+  const reviews = (t.reviews || []).slice(0, 2).map(r => `
+    <div class="trust-review">
+      <div class="trust-review-text">"${r.text}"</div>
+      <div class="trust-review-footer">
+        <span class="trust-review-author">— ${r.author}</span>
+        <span class="trust-review-stars">${reviewStarsHTML(r.rating)}</span>
+      </div>
+    </div>`).join('');
+
+  return `<div class="agency-card" style="--agency-color:${color};--agency-color-light:${lightColor}">
+    <div class="agency-card-top-border"></div>
+    <div class="agency-card-header">
+      <div class="agency-card-icon">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="${color}" fill-opacity=".9"><path d="M8 1l1.8 5H15l-4.2 3 1.6 5L8 11.2 3.6 14l1.6-5L1 6h5.2L8 1z"/></svg>
+      </div>
+      <div class="agency-card-label">Trust</div>
+    </div>
+    <div class="agency-card-body">
+      <div class="trust-rating-row">
+        <div class="trust-rating-num">${t.google_rating.toFixed(1)}</div>
+        <div>
+          <div class="trust-stars">${starsHTML(t.google_rating)}</div>
+          <a class="trust-reviews-link" href="${t.google_maps_url}" target="_blank" rel="noopener">${t.google_reviews} reviews on Google</a>
+        </div>
+      </div>
+      ${reviews}
+    </div>
+  </div>`;
+}
+
+function renderAgencyProfile() {
+  const section  = document.getElementById('js-agency-section');
+  const cards    = document.getElementById('js-agency-cards');
+  const heading  = document.getElementById('js-agency-heading');
   const agencyId = filters.agency;
 
-  if (agencyId === 'all' || !AGENTS[agencyId] || !AGENTS[agencyId].length) {
+  if (agencyId === 'all' || !AGENCY_PROFILES[agencyId]) {
     section.classList.add('hidden');
     return;
   }
 
-  const color = (AGENCIES[agencyId] || {}).color || '#1A3C5E';
-  const label = (AGENCIES[agencyId] || {}).label || agencyId;
-  heading.textContent = `Meet the Team at ${label}`;
-  grid.innerHTML = AGENTS[agencyId].map(a => agentCardHTML(a, color)).join('');
+  const profile = AGENCY_PROFILES[agencyId];
+  const color   = (AGENCIES[agencyId] || {}).color || '#1A3C5E';
+  const label   = (AGENCIES[agencyId] || {}).label || agencyId;
+
+  heading.textContent = label;
+  cards.innerHTML = [
+    buildContactCard(profile, color),
+    buildAboutCard(profile, color),
+    buildTrustCard(profile, color),
+  ].join('');
   section.classList.remove('hidden');
 }
 
@@ -1015,7 +1227,7 @@ document.querySelectorAll('.pill[data-f]').forEach(btn => {
     else if (f === 'beds')   filters.beds   = parseInt(v, 10);
     else if (f === 'area')   filters.area   = v;
     else if (f === 'ptype')  filters.ptype  = v;
-    renderAgents();
+    renderAgencyProfile();
     render();
   });
 });

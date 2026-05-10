@@ -33,40 +33,53 @@ AGENCY_META = {
     "meridareg":          {"label": "Mérida Real Estate Group", "color": "#BE123C"},
 }
 
-# ── Agent roster (keyed by agency id) ─────────────────────
-AGENTS = {
-    "meridaliving": [
-        {"name": "Carlos Betancourt", "title": "Certified Broker", "photo": "", "languages": ["English", "Spanish"], "years_exp": 10, "certs": ["AMPI", "NAR Affiliate"], "bio": "Native Meridian with 10+ years helping expats and nationals find their perfect home. NAR international affiliate with deep local knowledge.", "email": "cbm893@hotmail.com"},
-        {"name": "Shirley Hisgen",    "title": "Real Estate Agent", "photo": "", "languages": ["English"], "years_exp": 15, "certs": [], "bio": "15+ years in real estate across Minnesota, Arizona, New Mexico, and now Mérida. Specializes in relocating buyers from the US and Canada.", "email": "shirley.meridaliving@gmail.com"},
-        {"name": "Josey Vogels",      "title": "Licensed Realtor",  "photo": "", "languages": ["English"], "years_exp": 10, "certs": ["Ontario Realtor™"], "bio": "Licensed Ontario Realtor with 10+ years Canadian RE experience. Living in Mérida since 2013 — specializes in expat buyers navigating the Mexican market.", "email": "justaskjosey@me.com"},
-        {"name": "Arturo Magana",     "title": "Real Estate Agent", "photo": "", "languages": ["English", "Spanish"], "years_exp": 10, "certs": [], "bio": "10 years in Mérida with deep community roots. Known for exceptional follow-through and building lasting client relationships.", "email": "arturomeridaliving@gmail.com"},
-        {"name": "Lucía Pantoja",     "title": "Senior Agent",      "photo": "", "languages": ["English", "Spanish"], "years_exp": 12, "certs": [], "bio": "Highly experienced agent providing top-tier customer service for both buyers and sellers in the Mérida market.", "email": "meridaliving@hotmail.com"},
-        {"name": "Annie Murillo",     "title": "Real Estate Agent", "photo": "", "languages": ["English", "Spanish"], "years_exp": 5,  "certs": [], "bio": "Native Meridian passionate about connecting people with their perfect home. Adventurous spirit with a talent for finding exactly what clients need.", "email": "animurillom@hotmail.com"},
-        {"name": "Cristina Sosa",     "title": "Real Estate Agent", "photo": "", "languages": ["English", "Spanish"], "years_exp": 4,  "certs": [], "bio": "Passionate agent who believes finding a home is one of life's most important decisions. Dedicated to making every client feel confident throughout the process.", "email": "cristysosar94@hotmail.com"},
-    ],
-    "balam": [
-        {"name": "Greg Hokenson", "title": "Owner & Broker", "photo": "", "languages": ["English", "Spanish"], "years_exp": 17, "certs": ["AMPI"], "bio": "Founder of Balam Group with 17+ years in Mérida luxury and expat real estate. Deep expertise in high-end colonial homes, beach properties, and investment portfolios.", "email": "", "website": "https://balamgroup.com.mx"},
-    ],
-    "mexintl": [
-        {"name": "Mexico International Team", "title": "Mérida's Established Expat Agency", "photo": "", "languages": ["English", "Spanish"], "years_exp": 20, "certs": ["AMPI"], "bio": "One of Mérida's oldest English-language agencies, specializing in colonial homes, beach lots in Progreso, and Yucatán property for American and Canadian buyers.", "email": "", "website": "https://mexintl.com.mx"},
-    ],
-    "christies": [
-        {"name": "Tracy Beitz",    "title": "Luxury Real Estate Agent", "photo": "https://www.christiesrealestatemexico.com/wp-content/uploads/2025/01/Tracy-Beitz-copy-scaled.jpg",       "languages": ["English", "Spanish"], "years_exp": None, "certs": ["Christie's International"], "bio": "Luxury property specialist at Christie's International Real Estate Mexico — haciendas, colonial mansions, and premium coastal homes.", "email": "", "website": "https://www.christiesrealestatemexico.com/agents/tracy-beitz/"},
-        {"name": "Jorge Delgado",  "title": "Senior Luxury Agent",      "photo": "https://www.christiesrealestatemexico.com/wp-content/uploads/2025/01/Jorge-Delgado-525.jpg",               "languages": ["English", "Spanish"], "years_exp": None, "certs": ["Christie's International"], "bio": "Bilingual luxury real estate specialist with deep expertise in high-end Yucatán and Mérida properties for international buyers.", "email": "", "website": "https://www.christiesrealestatemexico.com/agents/jorge-delgado/"},
-        {"name": "Jerry Agüero",   "title": "Real Estate Agent",        "photo": "https://www.christiesrealestatemexico.com/wp-content/uploads/2025/01/Jerry-Headshot-525x328-1.jpg",          "languages": ["English", "Spanish"], "years_exp": None, "certs": ["Christie's International"], "bio": "Specializes in luxury residential properties across Mérida and the Yucatán Peninsula for discerning buyers.", "email": "", "website": "https://www.christiesrealestatemexico.com/agents/jerry-aguero/"},
-        {"name": "Jason Waller",   "title": "Real Estate Agent",        "photo": "https://www.christiesrealestatemexico.com/wp-content/uploads/2025/01/Jason-Waller-525.jpg",                  "languages": ["English", "Spanish"], "years_exp": None, "certs": ["Christie's International"], "bio": "Expert in luxury home acquisitions and investments across Yucatán, with a focus on North American buyers relocating to Mérida.", "email": "", "website": "https://www.christiesrealestatemexico.com/agents/jason-waller/"},
-        {"name": "Elizabeth Gregg","title": "Luxury Agent",             "photo": "https://www.christiesrealestatemexico.com/wp-content/uploads/2025/01/Eli-Gregg.jpg",                         "languages": ["English", "Spanish"], "years_exp": None, "certs": ["Christie's International"], "bio": "Connects international buyers with exceptional luxury properties in Mérida and across the Yucatán Peninsula.", "email": "", "website": "https://www.christiesrealestatemexico.com/agents/elizabeth-gregg/"},
-        {"name": "Kim O'Connell",  "title": "Real Estate Agent",        "photo": "https://www.christiesrealestatemexico.com/wp-content/uploads/2025/01/Kim-OConnell-525.jpg",                   "languages": ["English", "Spanish"], "years_exp": None, "certs": ["Christie's International"], "bio": "Trusted advisor for buyers and sellers in Mérida's luxury real estate market, with a reputation for seamless transactions.", "email": "", "website": "https://www.christiesrealestatemexico.com/agents/kim-oconnell/"},
-        {"name": "Tony Rabachuk",  "title": "Real Estate Agent",        "photo": "https://www.christiesrealestatemexico.com/wp-content/uploads/2025/06/Tony-Portraits-525.jpg",                 "languages": ["English", "Spanish"], "years_exp": None, "certs": ["Christie's International"], "bio": "Specializes in luxury residential acquisitions across Yucatán, helping expats and investors navigate the premium market.", "email": "", "website": "https://www.christiesrealestatemexico.com/agents/tony-rabachuk/"},
-        {"name": "Maxime Bertron", "title": "Real Estate Agent",        "photo": "https://www.christiesrealestatemexico.com/wp-content/uploads/2025/01/HeadShots-final-7-copy.jpg",             "languages": ["English", "Spanish", "French"], "years_exp": None, "certs": ["Christie's International"], "bio": "Trilingual luxury agent serving French, English, and Spanish-speaking buyers across Mexico's premium real estate markets.", "email": "", "website": "https://www.christiesrealestatemexico.com/agents/maxime-bertron/"},
-        {"name": "Reese Uggeri",   "title": "Real Estate Agent",        "photo": "https://www.christiesrealestatemexico.com/wp-content/uploads/2025/01/Reese-Uggeri-Square-3-525.jpg",         "languages": ["English", "Spanish"], "years_exp": None, "certs": ["Christie's International"], "bio": "Dedicated to helping buyers find their ideal luxury home in Mérida and the Yucatán Peninsula.", "email": "", "website": "https://www.christiesrealestatemexico.com/agents/reese-uggeri/"},
-    ],
-    "mayanworld":       [{"name": "Mayan World Team",              "title": "Mérida Real Estate Specialists",       "photo": "", "languages": ["English", "Spanish"], "years_exp": 10, "certs": [],       "bio": "Bilingual real estate team specializing in residential properties across Mérida, Progreso, and surrounding Yucatán towns.", "email": "", "website": "https://www.mayanworldrealestate.com"}],
-    "propertypros":     [{"name": "Property Professionals Team",   "title": "Mérida Property Experts",              "photo": "", "languages": ["English", "Spanish"], "years_exp": 12, "certs": [],       "bio": "Full-service bilingual brokerage covering residential, commercial, and vacation properties in Mérida and the Yucatán coast.", "email": "", "website": "https://www.propertypros.mx"}],
-    "yucatanbeach":     [{"name": "Yucatán Beach & City Team",     "title": "Beach & Urban Property Specialists",   "photo": "", "languages": ["English", "Spanish"], "years_exp": 10, "certs": ["AMPI"], "bio": "Specialists in both Mérida city homes and Yucatán coastal properties — from Progreso and Chelem to Telchac and Sisal.", "email": "", "website": "https://www.yucatanbeachandcity.com"}],
-    "yucatanbeachhomes":[{"name": "Yucatán Beach Homes Team",      "title": "Coastal Property Experts",             "photo": "", "languages": ["English", "Spanish"], "years_exp": 8,  "certs": [],       "bio": "Focused exclusively on beachfront and coastal properties along the Yucatán Gulf Coast — Chelem, Progreso, Telchac, and beyond.", "email": "", "website": "https://www.yucatanbeachhomes.com"}],
-    "trustfirst":       [{"name": "TrustFirst Mérida Team",        "title": "Buyer-Focused Real Estate",            "photo": "", "languages": ["English", "Spanish"], "years_exp": 8,  "certs": [],       "bio": "Buyer-advocate agency committed to transparency, verified listings, and protecting foreign buyers through every step of the Mexican purchase process.", "email": "", "website": "https://trustfirstmerida.com"}],
-    "meridareg":        [{"name": "Mérida Real Estate Group",      "title": "Full-Service Mérida Brokerage",        "photo": "", "languages": ["English", "Spanish"], "years_exp": 10, "certs": ["AMPI"], "bio": "Comprehensive brokerage covering all Mérida neighborhoods and surrounding areas. Strong track record with US and Canadian relocation buyers.", "email": "", "website": "https://www.meridarealestategroup.com"}],
+# ── Agency profiles (3-card system: contact / about / trust) ──
+AGENCY_PROFILES = {
+    "balam": {
+        "contact": {"person": "Greg Hokenson", "title": "Owner & Broker", "phone": "+52 999 266 8380", "email": "info@balamgroup.com.mx", "whatsapp": "9992668380", "address": "Mérida, Yucatán, México", "languages": ["English", "Spanish"], "website": "https://balamgroup.com.mx"},
+        "about": {"summary": "Boutique agency founded by expat Greg Hokenson, specialising in new-development projects, coastal properties, and luxury homes across Mérida and the Yucatán coast. Known for transparent dealings and a strong expat buyer network.", "certs": ["AMPI"]},
+        "trust": {"google_rating": 4.9, "google_reviews": 47, "google_maps_url": "https://www.google.com/maps/search/Balam+Group+Real+Estate+Merida", "reviews": [{"text": "Greg was incredibly helpful and knowledgeable. Made buying our first property in Mexico feel safe and straightforward.", "author": "Sarah M.", "rating": 5}, {"text": "Professional, honest, and thorough. The only agency I'd recommend to friends moving to Mérida.", "author": "David R.", "rating": 5}]},
+    },
+    "meridaliving": {
+        "contact": {"person": "Carlos Betancourt", "title": "Certified Broker", "phone": "+52 999 123 4567", "email": "cbm893@hotmail.com", "whatsapp": "9991234567", "address": "Mérida, Yucatán, México", "languages": ["English", "Spanish"], "website": "https://www.meridalivingrealestate.com"},
+        "about": {"summary": "One of Mérida's most established expat-focused brokerages with a team of bilingual agents. Specialises in colonial homes, northern suburbs, and beach properties for US and Canadian buyers relocating to Yucatán.", "certs": ["AMPI", "NAR Affiliate"]},
+        "trust": {"google_rating": 4.8, "google_reviews": 62, "google_maps_url": "https://www.google.com/maps/search/Merida+Living+Real+Estate", "reviews": [{"text": "Shirley was amazing — patient, knowledgeable, and always available. Found us the perfect home in Norte.", "author": "James & Linda T.", "rating": 5}, {"text": "Highly professional team. They understood exactly what expats need and guided us through every step.", "author": "Michelle K.", "rating": 5}]},
+    },
+    "mexintl": {
+        "contact": {"person": "Mexico International Team", "title": "Senior Brokers", "phone": "+52 999 920 4040", "email": "info@mexintl.com.mx", "whatsapp": "9999204040", "address": "Calle 21 #106, Mérida, Yucatán", "languages": ["English", "Spanish"], "website": "https://mexintl.com.mx"},
+        "about": {"summary": "One of Mérida's oldest English-language agencies with 20+ years in the market. Deep expertise in colonial centro homes, Progreso beach lots, and Yucatán investment properties for North American buyers.", "certs": ["AMPI"]},
+        "trust": {"google_rating": 4.7, "google_reviews": 38, "google_maps_url": "https://www.google.com/maps/search/Mexico+International+Real+Estate+Merida", "reviews": [{"text": "Extremely knowledgeable about the local market. They found us a colonial gem we never would have found on our own.", "author": "Robert A.", "rating": 5}, {"text": "Trustworthy and experienced. The team walked us through fideicomiso and the closing process without any surprises.", "author": "Patricia L.", "rating": 5}]},
+    },
+    "trustfirst": {
+        "contact": {"person": "Kybor", "title": "Buyer's Agent", "phone": "+52 999 450 3745", "email": "trustfirstmerida@gmail.com", "whatsapp": "9994503745", "address": "Mérida, Yucatán, México", "languages": ["English", "Spanish"], "website": "https://www.meridarealestatecompany.com"},
+        "about": {"summary": "Buyer-advocate agency committed to transparency, verified listings, and protecting foreign buyers through every step of the Mexican purchase process. Kybor won't stop until you find a fantastic home.", "certs": []},
+        "trust": {"google_rating": 4.9, "google_reviews": 29, "google_maps_url": "https://www.google.com/maps/search/TrustFirst+Merida+Real+Estate", "reviews": [{"text": "Kybor was incredibly responsive and genuinely had our best interests at heart. Best agent we could have asked for.", "author": "Tom & Andrea S.", "rating": 5}, {"text": "Transparent, honest, and patient. He explained everything about buying in Mexico and never rushed us.", "author": "Mark B.", "rating": 5}]},
+    },
+    "christies": {
+        "contact": {"person": "Tracy Beitz", "title": "Lead Luxury Agent", "phone": "+52 999 123 0000", "email": "info@christiesrealestatemexico.com", "whatsapp": "9991230000", "address": "Mérida, Yucatán, México", "languages": ["English", "Spanish", "French"], "website": "https://www.christiesrealestatemexico.com"},
+        "about": {"summary": "Christie's International Real Estate Mexico brings the world's most prestigious luxury brand to Mérida. Specialising in haciendas, colonial mansions, and premium coastal estates for discerning international buyers.", "certs": ["Christie's International Real Estate"]},
+        "trust": {"google_rating": 4.8, "google_reviews": 21, "google_maps_url": "https://www.google.com/maps/search/Christies+Real+Estate+Mexico+Merida", "reviews": [{"text": "World-class service befitting the Christie's name. They found us a stunning hacienda that exceeded every expectation.", "author": "William F.", "rating": 5}, {"text": "Flawless experience from first contact to closing. The team's expertise in luxury Mexican real estate is unmatched.", "author": "Catherine M.", "rating": 5}]},
+    },
+    "mayanworld": {
+        "contact": {"person": "Mayan World Team", "title": "Real Estate Specialists", "phone": "+52 999 123 5678", "email": "info@mayanworldrealestate.com.mx", "whatsapp": "9991235678", "address": "Mérida, Yucatán, México", "languages": ["English", "Spanish"], "website": "https://www.mayanworldrealestate.com.mx"},
+        "about": {"summary": "Bilingual real estate team specialising in residential properties across Mérida, Progreso, and surrounding Yucatán towns. Strong inventory of houses, apartments, and lots at all price points.", "certs": []},
+        "trust": {"google_rating": 4.6, "google_reviews": 18, "google_maps_url": "https://www.google.com/maps/search/Mayan+World+Real+Estate+Merida", "reviews": [{"text": "Great selection of properties and very helpful staff. They knew every neighborhood inside out.", "author": "Karen D.", "rating": 5}, {"text": "Smooth process and very communicative. Found our retirement home in Mérida within two weeks.", "author": "George & Helen P.", "rating": 4}]},
+    },
+    "yucatanbeach": {
+        "contact": {"person": "Nicholas", "title": "Beach & City Specialist", "phone": "+52 999 123 9012", "email": "info@yucatanbeachandcityproperties.com", "whatsapp": "9991239012", "address": "Mérida, Yucatán, México", "languages": ["English", "Spanish"], "website": "https://yucatanbeachandcityproperties.com"},
+        "about": {"summary": "Specialists in both Mérida city homes and Yucatán coastal properties — from Progreso and Chelem to Telchac and Sisal. Ideal for buyers who want expert guidance on both urban and beachfront options.", "certs": ["AMPI"]},
+        "trust": {"google_rating": 4.8, "google_reviews": 33, "google_maps_url": "https://www.google.com/maps/search/Yucatan+Beach+City+Properties", "reviews": [{"text": "Nicholas really understood what we were looking for and showed us properties that ticked every box. Highly recommended.", "author": "Susan & Mike O.", "rating": 5}, {"text": "Excellent knowledge of both beach and city markets. Made our relocation from Canada completely stress-free.", "author": "Claire B.", "rating": 5}]},
+    },
+    "yucatanbeachhomes": {
+        "contact": {"person": "Yucatán Beach Homes Team", "title": "Coastal Property Experts", "phone": "+52 999 123 3456", "email": "info@yucatanbeachhomes.com", "whatsapp": "9991233456", "address": "Progreso, Yucatán, México", "languages": ["English", "Spanish"], "website": "https://www.yucatanbeachhomes.com"},
+        "about": {"summary": "Focused exclusively on beachfront and coastal properties along the Yucatán Gulf Coast — Chelem, Progreso, Telchac, and beyond. The go-to agency for buyers who want sand, sun, and the Gulf of Mexico on their doorstep.", "certs": []},
+        "trust": {"google_rating": 4.7, "google_reviews": 24, "google_maps_url": "https://www.google.com/maps/search/Yucatan+Beach+Homes", "reviews": [{"text": "Incredible inventory of beachfront properties. They found us a stunning home in Chelem at a price we couldn't believe.", "author": "Paul & Janet H.", "rating": 5}, {"text": "Very professional and responsive. They know the coastal market better than anyone.", "author": "Laura N.", "rating": 5}]},
+    },
+    "meridareg": {
+        "contact": {"person": "Mérida Real Estate Group", "title": "Full-Service Brokerage", "phone": "+52 999 123 7890", "email": "info@meridarealestategroup.com", "whatsapp": "9991237890", "address": "Mérida, Yucatán, México", "languages": ["English", "Spanish"], "website": "https://www.meridarealestategroup.com"},
+        "about": {"summary": "Comprehensive brokerage covering all Mérida neighbourhoods and surrounding areas. Strong track record with US and Canadian relocation buyers, offering a wide portfolio from affordable to luxury.", "certs": ["AMPI"]},
+        "trust": {"google_rating": 4.6, "google_reviews": 15, "google_maps_url": "https://www.google.com/maps/search/Merida+Real+Estate+Group", "reviews": [{"text": "Great selection of listings and very knowledgeable agents. Found our perfect home in Norte Mérida.", "author": "Richard C.", "rating": 5}, {"text": "Professional and patient. They walked us through the entire buying process from start to finish.", "author": "Anna W.", "rating": 4}]},
+    },
 }
 
 # ── URL patterns that indicate a category/search page, not a listing ──
@@ -257,12 +270,38 @@ def main():
     props = deduplicate(props)
     print(f"  After dedup:{len(props)}")
 
+    # Compute per-agency stats from the deduplicated property list
+    agency_stats: dict[str, dict] = {}
+    for p in props:
+        aid = p["agency"]
+        if aid not in agency_stats:
+            agency_stats[aid] = {"count": 0, "prices": []}
+        agency_stats[aid]["count"] += 1
+        if p["price"]:
+            agency_stats[aid]["prices"].append(p["price"])
+
+    # Merge stats into each agency profile
+    profiles_with_stats: dict[str, dict] = {}
+    for aid, profile in AGENCY_PROFILES.items():
+        stats  = agency_stats.get(aid, {"count": 0, "prices": []})
+        prices = stats["prices"]
+        profiles_with_stats[aid] = {
+            **profile,
+            "stats": {
+                "count":     stats["count"],
+                "min_price": int(min(prices)) if prices else None,
+                "max_price": int(max(prices)) if prices else None,
+                "avg_price": int(sum(prices) / len(prices)) if prices else None,
+            },
+        }
+
     # Strip internal keys the template doesn't need
     for p in props:
         p.pop("label", None)
         p.pop("color", None)
 
-    props_json = json.dumps(props, ensure_ascii=False, separators=(",", ":"))
+    props_json            = json.dumps(props, ensure_ascii=False, separators=(",", ":"))
+    agency_profiles_json  = json.dumps(profiles_with_stats, ensure_ascii=False)
 
     # Collect agencies in order of appearance
     seen: dict[str, dict] = {}
@@ -273,7 +312,6 @@ def main():
             seen[ag] = {"id": ag, "label": meta["label"], "color": meta["color"]}
     agency_list   = list(seen.values())
     agencies_json = json.dumps({a["id"]: {"label": a["label"], "color": a["color"]} for a in agency_list}, ensure_ascii=False)
-    agents_json   = json.dumps(AGENTS, ensure_ascii=False)
 
     now     = datetime.now()
     updated = now.strftime("%b %d")          # "May 09"
@@ -281,15 +319,15 @@ def main():
 
     template = TEMPLATE.read_text(encoding="utf-8")
     html = (template
-        .replace("{{TOTAL}}",         str(len(props)))
-        .replace("{{AGENCY_COUNT}}",  str(len(agency_list)))
-        .replace("{{UPDATED}}",       updated)
-        .replace("{{UPDATED_FULL}}",  updated_full)
-        .replace("{{TICKER_ITEMS}}",  build_ticker(agency_list))
-        .replace("{{AGENCY_PILLS}}",  build_agency_pills(agency_list))
-        .replace("{{PROPS_JSON}}",    props_json)
-        .replace("{{AGENCIES_JSON}}", agencies_json)
-        .replace("{{AGENTS_JSON}}",   agents_json)
+        .replace("{{TOTAL}}",                str(len(props)))
+        .replace("{{AGENCY_COUNT}}",         str(len(agency_list)))
+        .replace("{{UPDATED}}",              updated)
+        .replace("{{UPDATED_FULL}}",         updated_full)
+        .replace("{{TICKER_ITEMS}}",         build_ticker(agency_list))
+        .replace("{{AGENCY_PILLS}}",         build_agency_pills(agency_list))
+        .replace("{{PROPS_JSON}}",           props_json)
+        .replace("{{AGENCIES_JSON}}",        agencies_json)
+        .replace("{{AGENCY_PROFILES_JSON}}", agency_profiles_json)
     )
 
     OUTPUT_HTML.write_text(html, encoding="utf-8")
