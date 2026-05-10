@@ -10,18 +10,20 @@
 /* ── Reset & tokens ───────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --navy:   #1A3C5E;
-  --gold:   #F3C13A;
-  --terra:  #C84B2F;
-  --green:  #15803D;
-  --text:   #111827;
-  --muted:  #6B7280;
-  --border: #E5E7EB;
-  --bg:     #F8F7F5;
+  --navy:   #1E293B;
+  --gold:   #E8A230;
+  --terra:  #E8A230;
+  --green:  #1E293B;
+  --text:   #1E293B;
+  --muted:  #64748B;
+  --border: #DDE1E7;
+  --bg:     #F4F5F7;
   --card:   #ffffff;
-  --shadow: 0 1px 6px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.04);
-  --r:      12px;
+  --shadow: 0 1px 4px rgba(30,41,59,.06), 0 4px 16px rgba(30,41,59,.04);
+  --r:      10px;
   --font:   -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --honey:  #E8A230;
+  --slate:  #1E293B;
 }
 body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.5; }
 a    { color: inherit; text-decoration: none; }
@@ -918,6 +920,37 @@ img  { display: block; }
 
 /* ── Utility ──────────────────────────────────────────────── */
 .hidden { display: none !important; }
+
+/* ── Palette overrides ────────────────────────────────────── */
+.card-price { color: var(--honey); }
+.btn-primary { background: var(--honey); color: var(--slate); box-shadow: 0 4px 20px rgba(232,162,48,.30); }
+.btn-primary:hover { box-shadow: 0 8px 28px rgba(232,162,48,.45); }
+.pill.active { background: var(--slate); border-color: var(--slate); }
+.pill:hover  { border-color: var(--slate); color: var(--slate); }
+.hero-eyebrow { background: rgba(232,162,48,.15); border-color: rgba(232,162,48,.45); color: var(--honey); }
+.hero h1 em { color: var(--honey); }
+.stat-num { color: var(--honey); }
+.btn-view { background: var(--slate); }
+.btn-view:hover { background: #334155; }
+.btn-ask  { background: var(--honey); color: var(--slate); }
+.btn-ask:hover { background: #D4901F; }
+.filter-wrap { background: #fff; }
+.filter-mobile-toggle { background: var(--slate); }
+.hero-stats { background: rgba(30,41,59,.80); border-color: rgba(232,162,48,.25); }
+.ticker-wrap { background: var(--slate); }
+.ticker-gold { color: var(--honey) !important; }
+.ticker-badge { background: var(--honey); color: var(--slate); }
+.footer { background: var(--slate); }
+.sticky-cta { background: var(--honey); color: var(--slate); box-shadow: 0 4px 20px rgba(232,162,48,.40); }
+.sticky-cta:hover { box-shadow: 0 6px 28px rgba(232,162,48,.55); }
+.agency-card-top-border { background: var(--honey); }
+.pill-gold { border-color: var(--honey) !important; color: #92610A !important; }
+.pill-gold.active { background: var(--honey) !important; border-color: var(--honey) !important; color: var(--slate) !important; }
+.btn-submit { background: var(--honey); color: var(--slate); }
+.btn-submit:hover { background: #D4901F; }
+.view-btn.active { background: var(--slate); }
+.back-to-top { color: var(--slate); }
+.filter-badge-count { background: var(--honey); color: var(--slate); }
 </style>
 </head>
 <body>
@@ -1556,15 +1589,33 @@ function renderAgencyProfile() {
 function cardHTML(p) {
   const ag    = AGENCIES[p.agency] || { label: p.agency, color: '#555' };
   const isLand = p.ptype === 'land';
-  const beds  = (!isLand && p.beds)  ? `<span class="attr">&#127968; ${p.beds} bd</span>`  : '';
-  const baths = (!isLand && p.baths) ? `<span class="attr">&#128703; ${p.baths} ba</span>` : '';
+  const beds  = (!isLand && p.beds)  ? `<span class="attr"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M1 8V5a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3"/><path d="M1 8h10v2H1z"/><path d="M3 4V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1"/></svg> ${p.beds} bd</span>` : '';
+  const baths = (!isLand && p.baths) ? `<span class="attr"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M2 6h8v2a4 4 0 0 1-8 0V6z"/><path d="M3 6V3a1 1 0 0 1 1-1h1"/><path d="M5 10v1.5M7 10v1.5"/></svg> ${p.baths} ba</span>` : '';
   const multi = p.also_at && p.also_at.length ? `<div class="multi-badge">Multi-Listed</div>` : '';
   const alsoAt = p.also_at && p.also_at.length ? `<div class="also-at">Also on: ${p.also_at.join(', ')}</div>` : '';
 
   const areaLabels = { beach: 'Beach', norte: 'North', centro: 'Centro', surrounding: 'Surrounding', rental: 'Rental', merida: 'Mérida' };
   const typeLabels = { house: 'House', condo: 'Condo', land: 'Land', commercial: 'Commercial' };
-  const areaBadge = p.area ? `<span class="area-tag area-${p.area}">${areaLabels[p.area] || p.area}</span>` : '';
-  const typeBadge = p.ptype && p.ptype !== 'house' ? `<span class="type-tag type-${p.ptype}">${typeLabels[p.ptype] || p.ptype}</span>` : '';
+  const AREA_ICONS = {
+    beach:       `<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M1 9c2-3 8-3 10 0"/><path d="M1 11h10"/><circle cx="9" cy="4" r="1.5"/></svg>`,
+    norte:       `<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M6 1v10M1 6h10"/><path d="M6 1l1.5 2.5h-3L6 1z" fill="currentColor" stroke="none"/></svg>`,
+    centro:      `<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M6 1C3.8 1 2 2.8 2 5c0 3 4 7 4 7s4-4 4-7c0-2.2-1.8-4-4-4z"/><circle cx="6" cy="5" r="1.3" fill="currentColor" stroke="none"/></svg>`,
+    surrounding: `<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M2 9l2-3 1.5 2L7.5 4 10 9H2z"/></svg>`,
+    rental:      `<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5.5a3 3 0 1 0-6 0c0 1 .5 1.8 1 2.5L6 11l2-3c.5-.7 1-1.5 1-2.5z"/><circle cx="6" cy="5.5" r="1" fill="currentColor" stroke="none"/></svg>`,
+    merida:      `<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><rect x="1.5" y="4" width="9" height="6.5" rx=".5"/><path d="M1 6.5L6 2l5 4.5"/><path d="M4.5 10.5V8h3v2.5"/></svg>`,
+  };
+  const areaBadge = p.area
+    ? `<span class="area-tag area-${p.area}" style="display:inline-flex;align-items:center;gap:3px">${AREA_ICONS[p.area]||''}${areaLabels[p.area] || p.area}</span>`
+    : '';
+  const TYPE_ICONS = {
+    house:      `<svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M1 6.5L6.5 1.5 12 6.5"/><path d="M2.5 5.5V11a.5.5 0 0 0 .5.5h2.5V8h2v3.5H10a.5.5 0 0 0 .5-.5V5.5"/></svg>`,
+    condo:      `<svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="1.5" width="9" height="10" rx=".5"/><path d="M4.5 4h1M7.5 4h1M4.5 6.5h1M7.5 6.5h1M5 11.5V9h3v2.5"/></svg>`,
+    land:       `<svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M1 10l3-4 2.5 2.5L9 5l3 5H1z"/><path d="M1 10h11"/></svg>`,
+    commercial: `<svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="1.5" y="3" width="10" height="8.5" rx=".5"/><path d="M4 11.5V8h5v3.5"/><path d="M4.5 1.5h4v1.5h-4z"/><path d="M4.5 5.5h1M7.5 5.5h1"/></svg>`,
+  };
+  const typeBadge = p.ptype && p.ptype !== 'house'
+    ? `<span class="type-tag type-${p.ptype}" style="display:inline-flex;align-items:center;gap:3px">${TYPE_ICONS[p.ptype]||''}${typeLabels[p.ptype] || p.ptype}</span>`
+    : '';
 
   const viewBtn = p.url
     ? `<button class="btn-view" onclick="window.open('${safeUrl(p.url)}','_blank')">View Listing &#8594;</button>`
@@ -1745,7 +1796,11 @@ function render() {
   if (showFavs && favs.size === 0) {
     grid.innerHTML = '<div class="empty"><h3>No saved listings yet</h3><p>Click &#9829; on any property to save it to your shortlist.</p></div>';
   } else if (list.length === 0) {
-    grid.innerHTML = '<div class="empty"><h3>No properties match</h3><p>Try adjusting the filters above.</p><button class="pill active" style="margin-top:16px;cursor:pointer" onclick="resetFilters()">&#10005; Reset Filters</button></div>';
+    grid.innerHTML = '<div class="empty">' +
+      '<svg width="80" height="80" viewBox="0 0 80 80" fill="none" stroke="#DDE1E7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto 16px"><rect x="12" y="28" width="40" height="36" rx="2"/><path d="M8 34L32 12l24 22"/><circle cx="58" cy="54" r="14" stroke="#E8A230" stroke-width="2"/><path d="M53 54h10M58 49v10" stroke="#E8A230"/><path d="M68 64l6 6" stroke="#E8A230"/></svg>' +
+      '<h3>No properties match</h3><p>Try adjusting the filters above.</p>' +
+      '<button class="pill active" style="margin-top:16px;cursor:pointer" onclick="resetFilters()">&#10005; Reset Filters</button>' +
+      '</div>';
   } else {
     grid.innerHTML = '';
     appendBatch(); // renders first PAGE_SIZE cards immediately
