@@ -149,12 +149,13 @@ button{{cursor:pointer;font-family:var(--font)}}
 .pill-gold.active{{background:linear-gradient(135deg,#F3C13A,#D97706)!important;border-color:#D97706!important;color:#fff!important}}
 .gold-badge{{background:#F3C13A;color:#0F2942;font-size:9px;font-weight:800;padding:1px 6px;border-radius:6px;letter-spacing:.5px;text-transform:uppercase;margin-left:4px;vertical-align:middle}}
 .filter-wrap{{position:sticky;top:0;z-index:200;background:#fff;border-bottom:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.06)}}
-.filter-inner{{max-width:1140px;margin:0 auto;padding:10px 16px}}
-.filter-row{{display:flex;gap:6px;align-items:center;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px}}
+.filter-inner{{max-width:1140px;margin:0 auto;padding:8px 16px;display:flex;flex-direction:column;gap:6px}}
+.filter-row{{display:flex;gap:6px;align-items:center;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:1px}}
 .filter-row::-webkit-scrollbar{{display:none}}
-.filter-sep{{width:1px;height:24px;background:var(--border);flex-shrink:0;margin:0 4px}}
-.filter-lbl{{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;flex-shrink:0}}
-.pill{{padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;border:1.5px solid var(--border);background:#fff;color:var(--text);transition:all .15s;white-space:nowrap;flex-shrink:0}}
+.filter-row-agency{{border-bottom:1px solid var(--border);padding-bottom:7px}}
+.filter-lbl{{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;flex-shrink:0;padding-right:2px}}
+.filter-sep{{width:1px;height:22px;background:var(--border);flex-shrink:0;margin:0 4px}}
+.pill{{padding:5px 13px;border-radius:20px;font-size:12.5px;font-weight:500;border:1.5px solid var(--border);background:#fff;color:var(--text);transition:all .15s;white-space:nowrap;flex-shrink:0}}
 .pill:hover{{border-color:var(--navy);color:var(--navy)}}
 .pill.active{{background:var(--navy);border-color:var(--navy);color:#fff}}
 .count-badge{{margin-left:auto;flex-shrink:0;font-size:12px;font-weight:600;color:var(--muted);white-space:nowrap;padding:0 4px}}
@@ -236,11 +237,12 @@ button{{cursor:pointer;font-family:var(--font)}}
 
 <div class="filter-wrap">
   <div class="filter-inner">
-    <div class="filter-row">
+    <div class="filter-row filter-row-agency">
       <span class="filter-lbl">Agency</span>
       <button class="pill active" data-f="agency" data-v="all">All</button>
 {agency_pills}
-      <div class="filter-sep"></div>
+    </div>
+    <div class="filter-row">
       <span class="filter-lbl">Price</span>
       <button class="pill active" data-f="price" data-v="all">All</button>
       <button class="pill" data-f="price" data-v="under200">Under $200K</button>
