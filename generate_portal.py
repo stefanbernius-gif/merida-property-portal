@@ -28,6 +28,198 @@ AGENCY_META = {
     "meridareg":         {"label": "Mérida Real Estate Group","color": "#BE123C"},
 }
 
+# Agent profiles — keyed by agency id. photo: "" = show initials avatar.
+AGENTS = {
+    "meridaliving": [
+        {
+            "name": "Carlos Betancourt",
+            "title": "Certified Broker",
+            "photo": "",
+            "languages": ["English", "Spanish"],
+            "years_exp": 10,
+            "certs": ["AMPI", "NAR Affiliate"],
+            "bio": "Native Meridian with 10+ years helping expats and nationals find their perfect home. NAR international affiliate with deep local knowledge.",
+            "email": "cbm893@hotmail.com",
+        },
+        {
+            "name": "Shirley Hisgen",
+            "title": "Real Estate Agent",
+            "photo": "",
+            "languages": ["English"],
+            "years_exp": 15,
+            "certs": [],
+            "bio": "15+ years in real estate across Minnesota, Arizona, New Mexico, and now Mérida. Specializes in relocating buyers from the US and Canada.",
+            "email": "shirley.meridaliving@gmail.com",
+        },
+        {
+            "name": "Josey Vogels",
+            "title": "Licensed Realtor",
+            "photo": "",
+            "languages": ["English"],
+            "years_exp": 10,
+            "certs": ["Ontario Realtor™"],
+            "bio": "Licensed Ontario Realtor with 10+ years Canadian RE experience. Living in Mérida since 2013 — specializes in expat buyers navigating the Mexican market.",
+            "email": "justaskjosey@me.com",
+        },
+        {
+            "name": "Arturo Magana",
+            "title": "Real Estate Agent",
+            "photo": "",
+            "languages": ["English", "Spanish"],
+            "years_exp": 10,
+            "certs": [],
+            "bio": "10 years in Mérida with deep community roots. Known for exceptional follow-through and building lasting client relationships.",
+            "email": "arturomeridaliving@gmail.com",
+        },
+        {
+            "name": "Lucía Pantoja",
+            "title": "Senior Agent",
+            "photo": "",
+            "languages": ["English", "Spanish"],
+            "years_exp": 12,
+            "certs": [],
+            "bio": "Highly experienced agent providing top-tier customer service for both buyers and sellers in the Mérida market.",
+            "email": "meridaliving@hotmail.com",
+        },
+        {
+            "name": "Annie Murillo",
+            "title": "Real Estate Agent",
+            "photo": "",
+            "languages": ["English", "Spanish"],
+            "years_exp": 5,
+            "certs": [],
+            "bio": "Native Meridian passionate about connecting people with their perfect home. Adventurous spirit with a talent for finding exactly what clients need.",
+            "email": "animurillom@hotmail.com",
+        },
+        {
+            "name": "Cristina Sosa",
+            "title": "Real Estate Agent",
+            "photo": "",
+            "languages": ["English", "Spanish"],
+            "years_exp": 4,
+            "certs": [],
+            "bio": "Passionate agent who believes finding a home is one of life's most important decisions. Dedicated to making every client feel confident throughout the process.",
+            "email": "cristysosar94@hotmail.com",
+        },
+    ],
+    "balam": [
+        {
+            "name": "Greg Hokenson",
+            "title": "Owner & Broker",
+            "photo": "",
+            "languages": ["English", "Spanish"],
+            "years_exp": 17,
+            "certs": ["AMPI"],
+            "bio": "Founder of Balam Group with 17+ years in Mérida luxury and expat real estate. Deep expertise in high-end colonial homes, beach properties, and investment portfolios.",
+            "email": "",
+        },
+    ],
+    "mexintl": [
+        {
+            "name": "Mexico International Team",
+            "title": "Mérida's Established Expat Agency",
+            "photo": "",
+            "languages": ["English", "Spanish"],
+            "years_exp": 20,
+            "certs": ["AMPI"],
+            "bio": "One of Mérida's oldest English-language agencies, specializing in colonial homes, beach lots in Progreso, and Yucatán property for American and Canadian buyers.",
+            "email": "",
+            "website": "https://mexintl.com",
+        },
+    ],
+    "christies": [
+        {
+            "name": "Christie's Mexico Team",
+            "title": "Luxury Real Estate Affiliate",
+            "photo": "",
+            "languages": ["English", "Spanish"],
+            "years_exp": 15,
+            "certs": ["Christie's International"],
+            "bio": "Christie's International Real Estate affiliate for Mérida and Yucatán. Specializing in luxury haciendas, colonial mansions, and premium beach properties.",
+            "email": "",
+            "website": "https://www.christiesrealestatemerida.com",
+        },
+    ],
+    "mayanworld": [
+        {
+            "name": "Mayan World Team",
+            "title": "Mérida Real Estate Specialists",
+            "photo": "",
+            "languages": ["English", "Spanish"],
+            "years_exp": 10,
+            "certs": [],
+            "bio": "Bilingual real estate team specializing in residential properties across Mérida, Progreso, and surrounding Yucatán towns.",
+            "email": "",
+            "website": "https://www.mayanworldrealestate.com",
+        },
+    ],
+    "propertypros": [
+        {
+            "name": "Property Professionals Team",
+            "title": "Mérida Property Experts",
+            "photo": "",
+            "languages": ["English", "Spanish"],
+            "years_exp": 12,
+            "certs": [],
+            "bio": "Full-service bilingual brokerage covering residential, commercial, and vacation properties in Mérida and the Yucatán coast.",
+            "email": "",
+            "website": "https://www.propertypros.mx",
+        },
+    ],
+    "yucatanbeach": [
+        {
+            "name": "Yucatán Beach & City Team",
+            "title": "Beach & Urban Property Specialists",
+            "photo": "",
+            "languages": ["English", "Spanish"],
+            "years_exp": 10,
+            "certs": ["AMPI"],
+            "bio": "Specialists in both Mérida city homes and Yucatán coastal properties — from Progreso and Chelem to Telchac and Sisal.",
+            "email": "",
+            "website": "https://www.yucatanbeachandcity.com",
+        },
+    ],
+    "yucatanbeachhomes": [
+        {
+            "name": "Yucatán Beach Homes Team",
+            "title": "Coastal Property Experts",
+            "photo": "",
+            "languages": ["English", "Spanish"],
+            "years_exp": 8,
+            "certs": [],
+            "bio": "Focused exclusively on beachfront and coastal properties along the Yucatán Gulf Coast — Chelem, Progreso, Telchac, and beyond.",
+            "email": "",
+            "website": "https://www.yucatanbeachhomes.com",
+        },
+    ],
+    "trustfirst": [
+        {
+            "name": "TrustFirst Mérida Team",
+            "title": "Buyer-Focused Real Estate",
+            "photo": "",
+            "languages": ["English", "Spanish"],
+            "years_exp": 8,
+            "certs": [],
+            "bio": "Buyer-advocate agency committed to transparency, verified listings, and protecting foreign buyers through every step of the Mexican purchase process.",
+            "email": "",
+            "website": "https://trustfirstmerida.com",
+        },
+    ],
+    "meridareg": [
+        {
+            "name": "Mérida Real Estate Group",
+            "title": "Full-Service Mérida Brokerage",
+            "photo": "",
+            "languages": ["English", "Spanish"],
+            "years_exp": 10,
+            "certs": ["AMPI"],
+            "bio": "Comprehensive brokerage covering all Mérida neighborhoods and surrounding areas. Strong track record with US and Canadian relocation buyers.",
+            "email": "",
+            "website": "https://www.meridarealestategroup.com",
+        },
+    ],
+}
+
 
 def load_and_process(csv_path):
     props = []
@@ -149,7 +341,7 @@ def prop_type_bucket(title, url):
     return "house"
 
 
-def build_html(props_json, total, updated, agency_list, agency_meta_js):
+def build_html(props_json, total, updated, agency_list, agency_meta_js, agents_js):
     agency_pills = "\n".join(
         f'        <button class="pill pill-gold" data-f="agency" data-v="{a["id"]}">&#11088; {a["label"]} <span class="gold-badge">Gold Sponsor</span></button>'
         if a["id"] == "balam" else
@@ -283,6 +475,29 @@ button{{cursor:pointer;font-family:var(--font)}}
 .footer{{background:#0F2942;color:rgba(255,255,255,.55);text-align:center;padding:28px 20px;font-size:12px;line-height:1.8}}
 .footer a{{color:rgba(255,255,255,.75)}}
 .hidden{{display:none!important}}
+.agents-section{{margin-bottom:28px}}
+.agents-section h3{{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)}}
+.agents-grid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-bottom:8px}}
+.agent-card{{background:#fff;border-radius:var(--r);box-shadow:var(--shadow);padding:20px 18px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;transition:transform .2s,box-shadow .2s;position:relative;overflow:hidden}}
+.agent-card::before{{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--agent-color,var(--navy))}}
+.agent-card:hover{{transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,.12)}}
+.agent-avatar{{width:72px;height:72px;border-radius:50%;object-fit:cover;border:3px solid var(--border)}}
+.agent-initials{{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:#fff;flex-shrink:0}}
+.agent-name{{font-size:15px;font-weight:700;color:var(--text);line-height:1.2}}
+.agent-title{{font-size:12px;color:var(--muted);margin-top:-4px}}
+.agent-exp{{font-size:12px;color:var(--muted)}}
+.agent-certs{{display:flex;flex-wrap:wrap;gap:4px;justify-content:center}}
+.cert-badge{{font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px;background:#EFF6FF;color:#1D4ED8;border:1px solid #BFDBFE;text-transform:uppercase;letter-spacing:.3px}}
+.cert-badge.ampi{{background:#F0FDF4;color:#15803D;border-color:#BBF7D0}}
+.cert-badge.nar{{background:#FEF3C7;color:#92400E;border-color:#FDE68A}}
+.agent-langs{{display:flex;gap:4px;flex-wrap:wrap;justify-content:center}}
+.lang-tag{{font-size:11px;padding:2px 8px;border-radius:10px;background:var(--bg);color:var(--muted);border:1px solid var(--border)}}
+.agent-bio{{font-size:12px;color:var(--muted);line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}}
+.agent-actions{{display:flex;gap:6px;width:100%;margin-top:auto}}
+.btn-agent-contact{{flex:1;padding:8px 0;background:var(--navy);color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:600;transition:background .15s}}
+.btn-agent-contact:hover{{background:#2563EB}}
+.btn-agent-site{{padding:8px 10px;background:transparent;color:var(--navy);border:1.5px solid var(--navy);border-radius:7px;font-size:12px;font-weight:600;transition:all .15s}}
+.btn-agent-site:hover{{background:var(--navy);color:#fff}}
 </style>
 </head>
 <body>
@@ -346,6 +561,10 @@ button{{cursor:pointer;font-family:var(--font)}}
 </div>
 
 <main class="main">
+  <div id="js-agents-section" class="agents-section hidden">
+    <h3 id="js-agents-heading">Meet the Team</h3>
+    <div class="agents-grid" id="js-agents-grid"></div>
+  </div>
   <div class="results-bar">
     <h2><strong id="js-vis">0</strong> properties</h2>
     <select class="sort-sel" id="js-sort">
@@ -412,10 +631,64 @@ button{{cursor:pointer;font-family:var(--font)}}
 <script>
 const PROPS = {props_json};
 const AGENCIES = {agency_meta_js};
+const AGENTS = {agents_js};
 
 let F = {{agency:"all", price:"all", beds:0, area:"all", ptype:"all"}};
 let sortKey = "price-asc";
 let pending = "";
+
+function initials(name){{
+  return name.split(" ").filter(Boolean).slice(0,2).map(w=>w[0].toUpperCase()).join("");
+}}
+
+function agentCardHTML(a, agencyColor){{
+  const certBadges = (a.certs||[]).map(c => {{
+    const cls = c.toLowerCase().includes("ampi") ? "ampi" : c.toLowerCase().includes("nar") ? "nar" : "";
+    return `<span class="cert-badge ${{cls}}">${{c}}</span>`;
+  }}).join("");
+  const langTags = (a.languages||[]).map(l => `<span class="lang-tag">${{l}}</span>`).join("");
+  const avatarEl = a.photo
+    ? `<img class="agent-avatar" src="${{a.photo}}" alt="${{a.name}}" loading="lazy" onerror="this.outerHTML=this.nextElementSibling.outerHTML">`
+    : `<div class="agent-initials" style="background:${{agencyColor}}">${{initials(a.name)}}</div>`;
+  const expLine = a.years_exp ? `<span class="agent-exp">${{a.years_exp}}+ years experience</span>` : "";
+  const bioLine = a.bio ? `<p class="agent-bio">${{a.bio}}</p>` : "";
+  const contactBtn = a.email
+    ? `<button class="btn-agent-contact" onclick="window.location='mailto:${{a.email}}?subject=Property Inquiry'">Email Agent</button>`
+    : `<button class="btn-agent-contact" onclick="openModal('')">Enquire</button>`;
+  const siteBtn = a.website
+    ? `<button class="btn-agent-site" onclick="window.open('${{a.website}}','_blank')">Website</button>`
+    : "";
+  return `<div class="agent-card" style="--agent-color:${{agencyColor}}">
+  ${{avatarEl}}
+  <div class="agent-name">${{a.name}}</div>
+  <div class="agent-title">${{a.title}}</div>
+  ${{expLine}}
+  <div class="agent-certs">${{certBadges}}</div>
+  <div class="agent-langs">${{langTags}}</div>
+  ${{bioLine}}
+  <div class="agent-actions">${{contactBtn}}${{siteBtn}}</div>
+</div>`;
+}}
+
+function renderAgents(){{
+  const section = document.getElementById("js-agents-section");
+  const grid    = document.getElementById("js-agents-grid");
+  const heading = document.getElementById("js-agents-heading");
+  if(F.agency === "all"){{
+    section.classList.add("hidden");
+    return;
+  }}
+  const agents = AGENTS[F.agency] || [];
+  if(!agents.length){{
+    section.classList.add("hidden");
+    return;
+  }}
+  const agencyColor = (AGENCIES[F.agency]||{{}}).color || "#1A3C5E";
+  const agencyLabel = (AGENCIES[F.agency]||{{}}).label || F.agency;
+  heading.textContent = `Meet the Team at ${{agencyLabel}}`;
+  grid.innerHTML = agents.map(a => agentCardHTML(a, agencyColor)).join("");
+  section.classList.remove("hidden");
+}}
 
 function fmtPrice(n){{
   if(!n) return '<span style="color:#9CA3AF;font-size:15px">Price on Request</span>';
@@ -494,6 +767,7 @@ document.querySelectorAll(".pill[data-f]").forEach(btn => {{
     else if(f === "beds")   F.beds   = parseInt(v);
     else if(f === "area")   F.area   = v;
     else if(f === "ptype")  F.ptype  = v;
+    renderAgents();
     render();
   }});
 }});
@@ -524,6 +798,7 @@ function submitLead(e){{
   document.getElementById("js-success").style.display = "block";
 }}
 
+renderAgents();
 render();
 </script>
 </body>
@@ -553,7 +828,8 @@ def main():
         ensure_ascii=False
     )
 
-    html = build_html(props_json, len(props), updated, agency_list, agency_meta_js)
+    agents_js = json.dumps(AGENTS, ensure_ascii=False)
+    html = build_html(props_json, len(props), updated, agency_list, agency_meta_js, agents_js)
     OUTPUT_HTML.write_text(html, encoding="utf-8")
     print(f"  Written: {OUTPUT_HTML} ({OUTPUT_HTML.stat().st_size // 1024} KB)")
 
