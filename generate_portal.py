@@ -80,6 +80,11 @@ AGENCY_PROFILES = {
         "about": {"summary": "Comprehensive brokerage covering all Mérida neighbourhoods and surrounding areas. Strong track record with US and Canadian relocation buyers, offering a wide portfolio from affordable to luxury.", "certs": ["AMPI"]},
         "trust": {"google_rating": 4.6, "google_reviews": 15, "google_maps_url": "https://www.google.com/maps/search/Merida+Real+Estate+Group", "reviews": [{"text": "Great selection of listings and very knowledgeable agents. Found our perfect home in Norte Mérida.", "author": "Richard C.", "rating": 5}, {"text": "Professional and patient. They walked us through the entire buying process from start to finish.", "author": "Anna W.", "rating": 4}]},
     },
+    "propertypros": {
+        "contact": {"person": "L. Limbaugh", "title": "Director", "phone": "+52 999 316 7075", "email": "Llimbaugh@PropertyPros.MX", "whatsapp": "9993167075", "address": "Calle 74 #53 x 55, Col. Centro, Mérida 97000", "languages": ["English", "Spanish", "French", "German", "Italian"], "website": "https://propertypros.mx"},
+        "about": {"summary": "Property Professionals Mexico is a full-service agency with 30+ years of experience in executive asset management across Mérida and the Yucatán coast. Multilingual team (EN/ES/FR/DE/IT) specialising in active adult communities, oceanfront homes, luxury properties, new construction, and investment portfolios for international buyers.", "certs": ["AMPI"]},
+        "trust": {"google_rating": 4.7, "google_reviews": 22, "google_maps_url": "https://www.google.com/maps/search/Property+Professionals+Mexico+Merida", "reviews": [{"text": "Incredible team — multilingual, patient, and genuinely knowledgeable about every neighbourhood in Mérida. Found us our dream retirement home.", "author": "Frank & Carol D.", "rating": 5}, {"text": "30 years of experience shows. They anticipated every question we had and made the process completely transparent.", "author": "Sylvie M.", "rating": 5}]},
+    },
 }
 
 # ── URL patterns that indicate a category/search page, not a listing ──
