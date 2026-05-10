@@ -95,9 +95,19 @@ def price_bucket(price):
 
 def build_html(props_json, total, updated, agency_list, agency_meta_js):
     agency_pills = "\n".join(
+        f'        <button class="pill pill-gold" data-f="agency" data-v="{a["id"]}">&#11088; {a["label"]} <span class="gold-badge">Gold Sponsor</span></button>'
+        if a["id"] == "balam" else
         f'        <button class="pill" data-f="agency" data-v="{a["id"]}">{a["label"]}</button>'
         for a in agency_list
     )
+
+    # Build ticker items (duplicated for seamless loop)
+    ticker_items = ""
+    for a in agency_list * 2:
+        if a["id"] == "balam":
+            ticker_items += f'<span class="ticker-item ticker-gold"><span class="ticker-star">&#11088;</span>{a["label"]}<span class="ticker-badge">Gold Sponsor</span></span>'
+        else:
+            ticker_items += f'<span class="ticker-item">{a["label"]}</span>'
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -127,6 +137,17 @@ button{{cursor:pointer;font-family:var(--font)}}
 .hero-stats{{display:flex;justify-content:center;gap:clamp(20px,4vw,48px);flex-wrap:wrap;position:relative;z-index:1}}
 .stat-num{{font-size:clamp(22px,4vw,32px);font-weight:700;color:#F3C13A;line-height:1}}
 .stat-lbl{{font-size:11px;opacity:.65;text-transform:uppercase;letter-spacing:.6px;margin-top:4px}}
+.ticker-wrap{{background:#0F2942;overflow:hidden;white-space:nowrap;padding:8px 0;border-bottom:2px solid #F3C13A}}
+.ticker-track{{display:inline-flex;gap:0;animation:ticker-scroll 35s linear infinite}}
+.ticker-track:hover{{animation-play-state:paused}}
+@keyframes ticker-scroll{{0%{{transform:translateX(0)}}100%{{transform:translateX(-50%)}}}}
+.ticker-item{{display:inline-flex;align-items:center;gap:6px;padding:0 28px;font-size:12px;font-weight:600;color:rgba(255,255,255,.65);letter-spacing:.4px;text-transform:uppercase;border-right:1px solid rgba(255,255,255,.1)}}
+.ticker-gold{{color:#F3C13A!important;font-weight:800}}
+.ticker-star{{font-size:13px}}
+.ticker-badge{{background:#F3C13A;color:#0F2942;font-size:9px;font-weight:800;padding:2px 7px;border-radius:8px;letter-spacing:.6px;text-transform:uppercase;margin-left:4px}}
+.pill-gold{{border-color:#F3C13A!important;color:#92610A!important;background:linear-gradient(135deg,#FFFBEB,#FEF3C7)!important;font-weight:700!important}}
+.pill-gold.active{{background:linear-gradient(135deg,#F3C13A,#D97706)!important;border-color:#D97706!important;color:#fff!important}}
+.gold-badge{{background:#F3C13A;color:#0F2942;font-size:9px;font-weight:800;padding:1px 6px;border-radius:6px;letter-spacing:.5px;text-transform:uppercase;margin-left:4px;vertical-align:middle}}
 .filter-wrap{{position:sticky;top:0;z-index:200;background:#fff;border-bottom:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.06)}}
 .filter-inner{{max-width:1140px;margin:0 auto;padding:10px 16px}}
 .filter-row{{display:flex;gap:6px;align-items:center;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px}}
@@ -207,6 +228,10 @@ button{{cursor:pointer;font-family:var(--font)}}
     <div><div class="stat-num">USD</div><div class="stat-lbl">All Prices</div></div>
     <div><div class="stat-num">{updated.split(",")[0]}</div><div class="stat-lbl">Last Updated</div></div>
   </div>
+</div>
+
+<div class="ticker-wrap">
+  <div class="ticker-track">{ticker_items}</div>
 </div>
 
 <div class="filter-wrap">
