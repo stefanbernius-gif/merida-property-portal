@@ -98,7 +98,8 @@ _GENERIC_TITLE = re.compile(
     r'|merida\s+real\s+estate\s+for\s+sale)',
     re.IGNORECASE,
 )
-MAX_USD_PRICE = 15_000_000  # anything above this is almost certainly MXN stored as USD
+MIN_USD_PRICE =     75_000  # below this is almost certainly a parsing error
+MAX_USD_PRICE = 15_000_000  # above this is almost certainly MXN stored as USD
 
 # ── Area keyword buckets ───────────────────────────────────
 _AREA_KW = {
@@ -164,7 +165,7 @@ def load_properties(csv_path: Path) -> list[dict]:
                     if row["currency"] == "MXN":
                         val /= MXN_TO_USD
                     val = int(round(val / 1000) * 1000)
-                    if 5_000 <= val <= MAX_USD_PRICE:
+                    if MIN_USD_PRICE <= val <= MAX_USD_PRICE:
                         price_usd = val
                 except (ValueError, ZeroDivisionError):
                     pass
