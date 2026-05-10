@@ -73,10 +73,32 @@ AGENTS = {
 _NON_PROPERTY_URL = re.compile(
     r'/property-category/|/listing-category/'
     r'|/search/?(?:$|[?#])'
+    r'|/search[-_]by[-_]map/'
     r'|/properties/?(?:$|[?#])'
-    r'|/listings/?(?:$|[?#])',
+    r'|/listings/?(?:$|[?#])'
+    r'|/state/[^/]+/?(?:$|[?#])'
+    r'|/city/[^/]+/?(?:$|[?#])'
+    r'|/area/[^/]+/?(?:$|[?#])'
+    r'|/action/[^/]+/?(?:$|[?#])'
+    r'|list\.html',
     re.IGNORECASE,
 )
+_ROOT_URL_RE = re.compile(r'^https?://[^/]+/?$')
+_SOLD_TITLE    = re.compile(r'\bSOLD\b|\bUNDER\s+CONTRACT\b|\bPENDING\b|\bOFF\s+MARKET\b', re.IGNORECASE)
+# Titles that are clearly agency/site names rather than individual property listings
+_GENERIC_TITLE = re.compile(
+    r'^(merida\s+(living\s+)?real\s+estate'
+    r'|merida\s+real\s+estate\s+group'
+    r'|real\s+estate\s+group'
+    r'|advanced\s+search'
+    r'|search\s+by\s+map'
+    r'|.*listings?\s+for\s+sale$'
+    r'|yucatan\s+real\s+estate'
+    r'|centro\s+real\s+estate'
+    r'|merida\s+real\s+estate\s+for\s+sale)',
+    re.IGNORECASE,
+)
+MAX_USD_PRICE = 15_000_000  # anything above this is almost certainly MXN stored as USD
 
 # ── Area keyword buckets ───────────────────────────────────
 _AREA_KW = {
@@ -124,8 +146,14 @@ def load_properties(csv_path: Path) -> list[dict]:
         for row in csv.DictReader(f):
             url = row["url"].strip()
 
-            # Portal-level defence: skip category/search pages that slipped through
-            if url and _NON_PROPERTY_URL.search(url):
+            # Skip root domain URLs and category/search pages
+            if not url or _ROOT_URL_RE.match(url) or _NON_PROPERTY_URL.search(url):
+                continue
+            # Never show sold / under-contract listings
+            if _SOLD_TITLE.search(row["title"]):
+                continue
+            # Skip generic agency/site-name titles (not individual listings)
+            if _GENERIC_TITLE.match(row["title"].strip()):
                 continue
 
             price_usd = None
@@ -136,7 +164,7 @@ def load_properties(csv_path: Path) -> list[dict]:
                     if row["currency"] == "MXN":
                         val /= MXN_TO_USD
                     val = int(round(val / 1000) * 1000)
-                    if val >= 5_000:
+                    if 5_000 <= val <= MAX_USD_PRICE:
                         price_usd = val
                 except (ValueError, ZeroDivisionError):
                     pass
