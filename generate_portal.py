@@ -10,7 +10,7 @@ import csv
 import json
 import re
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, date
 
 BASE         = Path(__file__).parent
 INPUT_CSV    = BASE / "properties_all.csv"
@@ -31,6 +31,11 @@ AGENCY_META = {
     "yucatanbeachhomes":  {"label": "Yucatán Beach Homes",      "color": "#C2410C"},
     "balam":              {"label": "Balam Group",              "color": "#5B21B6"},
     "meridareg":          {"label": "Mérida Real Estate Group", "color": "#BE123C"},
+    "realestatelab":      {"label": "Real Estate Lab",          "color": "#EA580C"},
+    "tierrayucatan":      {"label": "Tierra Yucatán",           "color": "#059669"},
+    "meridacentro":       {"label": "Mérida Centro Real Estate", "color": "#7C3AED"},
+    "yucatanlotsandhomes": {"label": "Yucatán Lots & Homes",     "color": "#DC2626"},
+    "whitecity":          {"label": "White City Properties",    "color": "#F59E0B"},
 }
 
 # ── Agency profiles (3-card system: contact / about / trust) ──
@@ -164,9 +169,31 @@ def _price_bucket(price: int | None) -> str:
 
 
 def load_properties(csv_path: Path) -> list[dict]:
-    props = []
+    today     = date.today().isoformat()
+    props     = []
+    all_rows  = []
+    modified  = False
+
     with open(csv_path, encoding="utf-8") as f:
-        for row in csv.DictReader(f):
+        reader    = csv.DictReader(f)
+        fieldnames = list(reader.fieldnames)
+        if "first_seen" not in fieldnames:
+            fieldnames.append("first_seen")
+        raw_rows = list(reader)
+
+    for row in raw_rows:
+        if not row.get("first_seen", "").strip():
+            row["first_seen"] = today
+            modified = True
+        all_rows.append(row)
+
+    if modified:
+        with open(csv_path, "w", newline="", encoding="utf-8") as f:
+            writer = csv.DictWriter(f, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(all_rows)
+
+    for row in all_rows:
             url = row["url"].strip()
 
             # Skip root domain URLs and category/search pages
@@ -210,10 +237,13 @@ def load_properties(csv_path: Path) -> list[dict]:
                 "location": location,
                 "url":      url,
                 "img":      row.get("image_url", "").strip(),
-                "dup":      row["duplicate_flag"],
-                "also_at":  [],
-                "area":     _area_bucket(title, location, url),
-                "ptype":    _type_bucket(title, url),
+                "featured":   row.get("featured", "").strip() == "1",
+                "first_seen": row.get("first_seen", "").strip(),
+                "is_new":     row.get("first_seen", "").strip() == today,
+                "dup":        row["duplicate_flag"],
+                "also_at":    [],
+                "area":       _area_bucket(title, location, url),
+                "ptype":      _type_bucket(title, url),
             })
     return props
 
