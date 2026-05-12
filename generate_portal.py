@@ -111,6 +111,7 @@ _NON_PROPERTY_URL = re.compile(
 _ROOT_URL_RE = re.compile(r'^https?://[^/]+/?$')
 # Merida Living uses /{id}/meridamexicorealestate for every individual listing — title is always generic
 _MERIDALIVING_PROP_RE = re.compile(r'/\d+/meridamexicorealestate', re.IGNORECASE)
+_TIERRAYUCATAN_PROP_RE = re.compile(r'/details/(en|es)/\d+', re.IGNORECASE)
 _SOLD_TITLE    = re.compile(r'\bSOLD\b|\bUNDER\s+CONTRACT\b|\bPENDING\b|\bOFF\s+MARKET\b', re.IGNORECASE)
 # Titles that are clearly agency/site names rather than individual property listings
 _GENERIC_TITLE = re.compile(
@@ -125,7 +126,7 @@ _GENERIC_TITLE = re.compile(
     r'|merida\s+real\s+estate\s+for\s+sale)',
     re.IGNORECASE,
 )
-MIN_USD_PRICE =     75_000  # below this is almost certainly a parsing error
+MIN_USD_PRICE =     20_000  # below this is almost certainly a parsing error (realestatelab has lots at $39K)
 MAX_USD_PRICE = 15_000_000  # above this is almost certainly MXN stored as USD
 
 # ── Area keyword buckets ───────────────────────────────────
@@ -204,7 +205,7 @@ def load_properties(csv_path: Path) -> list[dict]:
                 continue
             # Skip generic agency/site-name titles — but exempt Merida Living property URLs
             # (their SPA always sets the page title to "Merida Living Real Estate")
-            if _GENERIC_TITLE.match(row["title"].strip()) and not _MERIDALIVING_PROP_RE.search(url):
+            if _GENERIC_TITLE.match(row["title"].strip()) and not (_MERIDALIVING_PROP_RE.search(url) or _TIERRAYUCATAN_PROP_RE.search(url)):
                 continue
 
             price_usd = None
@@ -259,12 +260,20 @@ def deduplicate(props: list[dict]) -> list[dict]:
     for indices in groups.values():
         if len(indices) < 2:
             continue
-        def completeness(i):
-            p = props[i]
-            return sum(1 for v in [p["price"], p["beds"], p["baths"], p["location"], p["img"]] if v)
-        best = max(indices, key=completeness)
-        props[best]["also_at"] = [props[i]["label"] for i in indices if i != best]
-        remove.update(i for i in indices if i != best)
+        # Never remove tierrayucatan — keep all of them, deduplicate others
+        tier_indices = [i for i in indices if props[i]["agency"] == "tierrayucatan"]
+        other_indices = [i for i in indices if props[i]["agency"] != "tierrayucatan"]
+
+        if other_indices:
+            # Deduplicate non-tierrayucatan properties only
+            def completeness(i):
+                p = props[i]
+                return sum(1 for v in [p["price"], p["beds"], p["baths"], p["location"], p["img"]] if v)
+            best_other = max(other_indices, key=completeness)
+            also_at = [props[i]["label"] for i in other_indices if i != best_other] + [props[i]["label"] for i in tier_indices]
+            if also_at:
+                props[best_other]["also_at"] = also_at
+            remove.update(i for i in other_indices if i != best_other)
 
     return [p for i, p in enumerate(props) if i not in remove]
 
