@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mérida Properties — Find Your Home in Yucatán</title>
 <meta name="description" content="Search {{TOTAL}}+ listings from Mérida's top real estate agencies. All prices in USD. Built for US and Canadian buyers.">
-<!-- Leaflet loaded lazily on first map click -->
 <style>
 /* ── Reset & tokens ───────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -353,7 +352,6 @@ img  { display: block; }
 .area-norte      { background: #DCFCE7; color: #15803D; }
 .area-centro     { background: #FEF3C7; color: #92400E; }
 .area-surrounding{ background: #F3E8FF; color: #7E22CE; }
-.area-rental     { background: #FFE4E6; color: #BE123C; }
 .area-merida     { background: #F3F4F6; color: #4B5563; }
 .type-tag {
   display: inline-block;
@@ -400,11 +398,6 @@ img  { display: block; }
 @media (min-width: 580px)  { .grid { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 900px)  { .grid { grid-template-columns: repeat(3, 1fr); } }
 
-/* ── Feature 4: View toggle & map ─────────────────────────── */
-.view-toggle { display: flex; border: 1.5px solid var(--border); border-radius: 8px; overflow: hidden; }
-.view-btn { padding: 7px 14px; border: none; background: #fff; font-size: 13px; color: var(--muted); cursor: pointer; font-family: var(--font); font-weight: 500; }
-.view-btn.active { background: var(--navy); color: #fff; }
-.map-container { height: 520px; border-radius: 12px; overflow: hidden; margin-bottom: 20px; }
 
 /* ── Feature 8: Currency toggle ───────────────────────────── */
 .cur-toggle {
@@ -508,22 +501,9 @@ img  { display: block; }
 }
 .btn-view:hover    { background: #2563EB; }
 .btn-view:disabled { opacity: .4; cursor: default; }
-.btn-ask {
-  padding: 10px 14px;
-  background: var(--terra);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  transition: background .15s;
-  white-space: nowrap;
-}
-.btn-ask:hover { background: #A33B22; }
-
 /* ── Feature 5: Favorites ─────────────────────────────────── */
 .btn-fav {
-  position: absolute; top: 8px; left: 10px; z-index: 2;
+  position: absolute; top: 8px; right: 10px; z-index: 2;
   background: rgba(255,255,255,.85); backdrop-filter: blur(4px);
   border: none; border-radius: 50%;
   width: 32px; height: 32px;
@@ -534,17 +514,6 @@ img  { display: block; }
 }
 .btn-fav:hover  { color: #EF4444; background: #fff; }
 .btn-fav.fav-active { color: #EF4444; }
-
-/* ── Feature 7: WhatsApp share ────────────────────────────── */
-.btn-share {
-  padding: 10px 12px;
-  background: #25D366; color: #fff;
-  border: none; border-radius: 8px;
-  display: flex; align-items: center; justify-content: center;
-  transition: background .15s;
-  flex-shrink: 0;
-}
-.btn-share:hover { background: #1ebe5a; }
 
 /* ── Feature 2: Skeleton loading ──────────────────────────── */
 @keyframes shimmer {
@@ -763,72 +732,44 @@ img  { display: block; }
 .trust-review-author { font-size: 11px; font-weight: 700; color: var(--muted); }
 .trust-review-stars  { font-size: 11px; color: #F3C13A; letter-spacing: 1px; }
 
-/* ── Sticky CTA ───────────────────────────────────────────── */
-.sticky-cta {
-  position: fixed; bottom: 20px; right: 20px; z-index: 150;
-  background: var(--terra); color: #fff;
-  border: none; border-radius: 40px;
-  padding: 14px 22px; font-size: 14px; font-weight: 700;
-  box-shadow: 0 4px 20px rgba(200,75,47,.45);
-  display: flex; align-items: center; gap: 8px;
-  transition: transform .15s, box-shadow .15s;
+/* ── Shortlist toast anchor (bottom-center, avoids back-to-top) ── */
+/* ── Shortlist toast popup ─────────────────────────────────── */
+.shortlist-toast {
+  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+  z-index: 500; width: min(420px, calc(100vw - 32px));
+  background: #fff; border-radius: 14px;
+  box-shadow: 0 8px 40px rgba(0,0,0,.18);
+  padding: 20px 20px 18px;
+  display: none; flex-direction: column; gap: 12px;
+  border-top: 4px solid var(--honey);
 }
-.sticky-cta:hover { transform: translateY(-2px); box-shadow: 0 6px 28px rgba(200,75,47,.55); }
-
-/* ── Lead modal ───────────────────────────────────────────── */
-.overlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,.5);
-  z-index: 500; display: none; align-items: flex-end;
-  justify-content: center; padding: 0;
+.shortlist-toast.open { display: flex; }
+.shortlist-toast-head {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 10px;
 }
-.overlay.open { display: flex; }
-@media (min-width: 560px) {
-  .overlay { align-items: center; padding: 20px; }
-  .modal   { border-radius: var(--r); max-width: 480px; }
+.shortlist-toast-title { font-size: 15px; font-weight: 800; color: var(--navy); line-height: 1.3; }
+.shortlist-toast-sub   { font-size: 13px; color: var(--muted); margin-top: 2px; }
+.shortlist-toast-close {
+  background: none; border: none; font-size: 18px;
+  color: var(--muted); padding: 0; line-height: 1; flex-shrink: 0; cursor: pointer;
 }
-.modal {
-  background: #fff; width: 100%;
-  border-radius: var(--r) var(--r) 0 0;
-  padding: 28px 24px 32px;
-  max-height: 90vh; overflow-y: auto;
-  position: relative;
+.shortlist-toast-row {
+  display: flex; gap: 8px;
 }
-.modal-handle { width: 40px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 20px; }
-.modal h2    { font-size: 20px; font-weight: 800; color: var(--navy); margin-bottom: 6px; }
-.modal .sub  { font-size: 13px; color: var(--muted); margin-bottom: 22px; }
-.form-row    { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.field       { margin-bottom: 14px; }
-.field label {
-  display: block; font-size: 12px; font-weight: 700;
-  color: var(--text); text-transform: uppercase;
-  letter-spacing: .4px; margin-bottom: 5px;
-}
-.field input, .field select, .field textarea {
-  width: 100%; padding: 11px 14px;
+.shortlist-toast-input {
+  flex: 1; padding: 10px 12px;
   border: 1.5px solid var(--border); border-radius: 8px;
   font-size: 14px; font-family: var(--font);
-  background: #fff; color: var(--text); transition: border-color .15s;
+  color: var(--text); transition: border-color .15s;
 }
-.field input:focus, .field select:focus, .field textarea:focus {
-  outline: none; border-color: var(--navy);
+.shortlist-toast-input:focus { outline: none; border-color: var(--navy); }
+.shortlist-toast-send {
+  padding: 10px 16px; background: var(--honey); color: var(--slate);
+  border: none; border-radius: 8px; font-size: 14px; font-weight: 700;
+  white-space: nowrap; transition: background .15s;
 }
-.field textarea { height: 72px; resize: none; }
-.btn-submit {
-  width: 100%; padding: 14px;
-  background: var(--terra); color: #fff;
-  border: none; border-radius: 8px;
-  font-size: 15px; font-weight: 700;
-  margin-top: 4px; transition: background .15s;
-}
-.btn-submit:hover { background: #A33B22; }
-.btn-close-x {
-  position: absolute; top: 14px; right: 16px;
-  background: none; border: none;
-  font-size: 20px; color: var(--muted); padding: 4px; line-height: 1;
-}
-.success { display: none; text-align: center; padding: 12px 0 4px; }
-.success h3 { font-size: 20px; color: var(--green); margin-bottom: 8px; }
-.success p  { color: var(--muted); font-size: 14px; }
+.shortlist-toast-send:hover { background: #D4901F; }
+.shortlist-toast-sent { font-size: 13px; color: var(--green); font-weight: 600; display: none; }
 
 /* ── Footer ───────────────────────────────────────────────── */
 .footer {
@@ -980,8 +921,6 @@ img  { display: block; }
 .stat-num { color: var(--honey); }
 .btn-view { background: var(--slate); }
 .btn-view:hover { background: #334155; }
-.btn-ask  { background: var(--honey); color: var(--slate); }
-.btn-ask:hover { background: #D4901F; }
 .filter-wrap { background: #fff; }
 .filter-mobile-toggle { background: var(--slate); }
 .hero-stats { background: rgba(30,41,59,.80); border-color: rgba(232,162,48,.25); }
@@ -989,14 +928,11 @@ img  { display: block; }
 .ticker-gold { color: var(--honey) !important; }
 .ticker-badge { background: var(--honey); color: var(--slate); }
 .footer { background: var(--slate); }
-.sticky-cta { background: var(--honey); color: var(--slate); box-shadow: 0 4px 20px rgba(232,162,48,.40); }
-.sticky-cta:hover { box-shadow: 0 6px 28px rgba(232,162,48,.55); }
 .agency-card-top-border { background: var(--honey); }
 .pill-gold { border-color: var(--honey) !important; color: #92610A !important; }
 .pill-gold.active { background: var(--honey) !important; border-color: var(--honey) !important; color: var(--slate) !important; }
 .btn-submit { background: var(--honey); color: var(--slate); }
 .btn-submit:hover { background: #D4901F; }
-.view-btn.active { background: var(--slate); }
 .back-to-top { color: var(--slate); }
 .filter-badge-count { background: var(--honey); color: var(--slate); }
 </style>
@@ -1105,7 +1041,6 @@ img  { display: block; }
       <button class="pill" data-f="area" data-v="norte">&#9650; North Mérida</button>
       <button class="pill" data-f="area" data-v="beach">&#127944; Beach / Coast</button>
       <button class="pill" data-f="area" data-v="surrounding">&#127963; Surrounding</button>
-      <button class="pill" data-f="area" data-v="rental">&#128176; Rental / Investment</button>
       <button class="pill" data-f="area" data-v="merida">&#127968; Mérida General</button>
       <div class="filter-sep"></div>
       <span class="filter-lbl">Type</span>
@@ -1128,6 +1063,8 @@ img  { display: block; }
       <button class="pill" data-f="beds" data-v="2">2+</button>
       <button class="pill" data-f="beds" data-v="3">3+</button>
       <button class="pill" data-f="beds" data-v="4">4+</button>
+      <div class="filter-sep"></div>
+      <button class="pill" id="js-complete-pill" onclick="toggleCompleteOnly()">&#10003; Complete listings only</button>
       <span class="count-badge" id="js-count">— shown</span>
     </div>
     </div><!-- /.filter-rows -->
@@ -1143,11 +1080,6 @@ img  { display: block; }
   <div class="results-bar">
     <h2><strong id="js-vis">0</strong> properties</h2>
     <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-      <!-- Feature 4: View toggle -->
-      <div class="view-toggle">
-        <button class="view-btn active" id="js-view-grid" onclick="setView('grid')">&#8862; Grid</button>
-        <button class="view-btn" id="js-view-map" onclick="setView('map')">&#8857; Map</button>
-      </div>
       <!-- Feature 8: Currency toggle -->
       <button class="cur-toggle" id="js-cur-toggle" onclick="toggleCurrency()">&#127474;&#127485; MXN</button>
       <select class="sort-sel" id="js-sort">
@@ -1157,58 +1089,25 @@ img  { display: block; }
       </select>
     </div>
   </div>
-  <!-- Feature 4: Map container -->
-  <div id="js-map" class="map-container" style="display:none"></div>
   <div class="grid" id="js-grid"></div>
 </main>
 
-<button class="sticky-cta" onclick="openModal()">&#128172; Get Matched Free</button>
 <button class="back-to-top" id="js-back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">&#8679;</button>
 
 <!-- ── Lead modal ─────────────────────────────────────────── -->
-<div class="overlay" id="js-overlay" onclick="overlayClick(event)">
-  <div class="modal" id="js-modal">
-    <div class="modal-handle"></div>
-    <button class="btn-close-x" onclick="closeModal()">&#10005;</button>
-    <h2>Find Your Property in Mérida</h2>
-    <p class="sub">Tell us what you need — we'll connect you with the right agency. No spam, ever.</p>
-    <form id="js-form" onsubmit="submitLead(event)">
-      <div class="form-row">
-        <div class="field"><label>First Name</label><input type="text" name="first" required placeholder="Jane"></div>
-        <div class="field"><label>Last Name</label><input type="text" name="last" required placeholder="Smith"></div>
-      </div>
-      <div class="field"><label>Email *</label><input type="email" name="email" required placeholder="jane@example.com"></div>
-      <div class="field"><label>Phone (optional)</label><input type="tel" name="phone" placeholder="+1 555 000 0000"></div>
-      <div class="form-row">
-        <div class="field">
-          <label>Budget (USD)</label>
-          <select name="budget">
-            <option value="">Any budget</option>
-            <option>Under $200,000</option>
-            <option>$200,000 – $500,000</option>
-            <option>$500,000 – $1,000,000</option>
-            <option>$1,000,000+</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>Bedrooms</label>
-          <select name="beds">
-            <option value="">Any</option>
-            <option>1+</option><option>2+</option><option>3+</option><option>4+</option>
-          </select>
-        </div>
-      </div>
-      <div class="field">
-        <label>Notes (optional)</label>
-        <textarea name="notes" placeholder="Pool, near Centro, moving in 2026, or anything else..."></textarea>
-      </div>
-      <button type="submit" class="btn-submit">Connect Me With an Agent &#8594;</button>
-    </form>
-    <div class="success" id="js-success">
-      <h3>&#10003; Request Received!</h3>
-      <p>We'll match you with the right agency within 24 hours.<br>Check your inbox for next steps.</p>
+<div class="shortlist-toast" id="js-shortlist-toast">
+  <div class="shortlist-toast-head">
+    <div>
+      <div class="shortlist-toast-title">&#128205; You've saved 5 properties</div>
+      <div class="shortlist-toast-sub">Send your shortlist to yourself — no account needed.</div>
     </div>
+    <button class="shortlist-toast-close" onclick="dismissShortlistToast()">&#10005;</button>
   </div>
+  <div class="shortlist-toast-row">
+    <input class="shortlist-toast-input" id="js-shortlist-email" type="email" placeholder="your@email.com">
+    <button class="shortlist-toast-send" onclick="sendShortlistEmail()">Send &#8594;</button>
+  </div>
+  <div class="shortlist-toast-sent" id="js-shortlist-sent">&#10003; Your email client will open with the list.</div>
 </div>
 
 <!-- ── Footer ─────────────────────────────────────────────── -->
@@ -1229,7 +1128,6 @@ const AGENCY_PROFILES  = {{AGENCY_PROFILES_JSON}};
 // ── State ──────────────────────────────────────────────────
 let filters  = { agency: 'all', price: 'all', beds: 0, area: 'all', ptype: 'all' };
 let sortKey  = 'price-asc';
-let pendingTitle = '';
 
 // Feature 5: Favorites
 let favs     = new Set(JSON.parse(localStorage.getItem('merida_favs') || '[]'));
@@ -1238,30 +1136,27 @@ let showFavs = false;
 // Feature 6: Search
 let search = '';
 
+// Feature 9: Complete listings only
+let completeOnly = false;
+function toggleCompleteOnly() {
+  completeOnly = !completeOnly;
+  const btn = document.getElementById('js-complete-pill');
+  if (btn) btn.classList.toggle('active', completeOnly);
+  render();
+}
+
 // Feature 8: Currency
 let currency = 'USD';
 const MXN_RATE = 17.5;
 
-// Feature 4: Map
-let mapInstance   = null;
-let mapMarkers    = [];
-let currentView   = 'grid';
-let leafletReady  = false;
+// Suppress NEW badge when >60% of listings share it — means it was a bulk initial load, not a real fresh batch
+const NEW_BADGE_ENABLED = PROPS.filter(p => p.is_new).length / Math.max(PROPS.length, 1) < 0.6;
 
 // Batch rendering
 const PAGE_SIZE   = 24;
 let currentList   = [];
 let currentPage   = 0;
 let scrollObserver = null;
-const AREA_COORDS = {
-  centro:      [20.9674, -89.6237],
-  norte:       [21.020,  -89.630],
-  beach:       [21.283,  -89.665],
-  surrounding: [20.900,  -89.650],
-  rental:      [20.960,  -89.615],
-  merida:      [20.967,  -89.624],
-};
-const DEFAULT_COORD = [20.9674, -89.6237];
 
 // ── Feature 1: URL state persistence ──────────────────────
 function pushState() {
@@ -1354,14 +1249,10 @@ function toggleCurrency() {
 }
 
 // ── Feature 7: WhatsApp share ──────────────────────────────
-function shareWhatsApp(url, title, event) {
-  event && event.stopPropagation();
-  const decoded = decodeURIComponent(title);
-  const text = '🏡 Check out this property in Mérida:\n*' + decoded + '*\n' + (url || 'Contact agency for details');
-  window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
-}
-
 // ── Feature 5: Favorites helpers ───────────────────────────
+const SHORTLIST_THRESHOLD = 5;
+let shortlistPromptShown = false;
+
 function toggleFav(url, event) {
   event && event.stopPropagation();
   if (favs.has(url)) favs.delete(url);
@@ -1369,90 +1260,34 @@ function toggleFav(url, event) {
   localStorage.setItem('merida_favs', JSON.stringify([...favs]));
   render();
   pushState();
+  checkShortlistThreshold();
 }
 
-// ── Feature 4: Map helpers ─────────────────────────────────
-function coordForProp(p) {
-  const base = AREA_COORDS[p.area] || DEFAULT_COORD;
-  const scatter = () => (Math.random() - 0.5) * 0.016;
-  return [base[0] + scatter(), base[1] + scatter()];
+function checkShortlistThreshold() {
+  if (favs.size < SHORTLIST_THRESHOLD) return;
+  if (shortlistPromptShown) return;
+  shortlistPromptShown = true;
+  document.getElementById('js-shortlist-toast').classList.add('open');
 }
 
-function clearMapMarkers() {
-  mapMarkers.forEach(m => m.remove());
-  mapMarkers = [];
+function dismissShortlistToast() {
+  document.getElementById('js-shortlist-toast').classList.remove('open');
 }
 
-function plotMapMarkers(list) {
-  clearMapMarkers();
-  list.forEach(p => {
-    const [lat, lng] = coordForProp(p);
-    const priceLabel = p.price
-      ? (currency === 'MXN'
-          ? 'MX$' + Math.round(p.price * MXN_RATE).toLocaleString('es-MX')
-          : '$' + p.price.toLocaleString('en-US'))
-      : 'Price on Request';
-    const ag = AGENCIES[p.agency] || { label: p.agency };
-    const popup = `<div style="font-family:-apple-system,sans-serif;min-width:180px">
-      <div style="font-weight:700;font-size:13px;margin-bottom:4px">${p.title || 'Property'}</div>
-      <div style="font-size:14px;font-weight:800;color:#15803D;margin-bottom:4px">${priceLabel}</div>
-      <div style="font-size:11px;color:#6B7280;margin-bottom:8px">${ag.label}</div>
-      ${p.url ? `<a href="${p.url}" target="_blank" rel="noopener" style="display:inline-block;background:#1A3C5E;color:#fff;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;text-decoration:none">View Listing →</a>` : ''}
-    </div>`;
-    const marker = L.marker([lat, lng]).addTo(mapInstance).bindPopup(popup);
-    mapMarkers.push(marker);
-  });
+function sendShortlistEmail() {
+  const email = document.getElementById('js-shortlist-email').value.trim();
+  if (!email) { document.getElementById('js-shortlist-email').focus(); return; }
+  const saved = PROPS.filter(p => favs.has(p.url));
+  const body = saved.map((p, i) =>
+    `${i + 1}. ${p.title}${p.price ? ' — ' + p.price : ''}${p.url ? '\n   ' + p.url : ''}`
+  ).join('\n\n');
+  const subject = encodeURIComponent('My Mérida Property Shortlist');
+  const bodyEnc = encodeURIComponent('Here are my saved properties:\n\n' + body);
+  window.open(`mailto:${encodeURIComponent(email)}?subject=${subject}&body=${bodyEnc}`);
+  document.getElementById('js-shortlist-sent').style.display = 'block';
+  setTimeout(dismissShortlistToast, 3000);
 }
 
-function initMap() {
-  mapInstance = L.map('js-map').setView(DEFAULT_COORD, 12);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap contributors',
-    maxZoom: 18,
-  }).addTo(mapInstance);
-}
-
-function setView(v) {
-  currentView = v;
-  const mapEl  = document.getElementById('js-map');
-  const gridEl = document.getElementById('js-grid');
-  const btnG   = document.getElementById('js-view-grid');
-  const btnM   = document.getElementById('js-view-map');
-
-  if (v === 'map') {
-    gridEl.style.display = 'none';
-    mapEl.style.display  = '';
-    btnG.classList.remove('active');
-    btnM.classList.add('active');
-
-    if (!leafletReady) {
-      // Lazy-load Leaflet CSS + JS on first map click
-      const link = document.createElement('link');
-      link.rel   = 'stylesheet';
-      link.href  = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
-      document.head.appendChild(link);
-      const script  = document.createElement('script');
-      script.src    = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
-      script.onload = () => {
-        leafletReady = true;
-        initMap();
-        plotMapMarkers(getFilteredList());
-      };
-      document.head.appendChild(script);
-    } else if (!mapInstance) {
-      initMap();
-      plotMapMarkers(getFilteredList());
-    } else {
-      mapInstance.invalidateSize();
-      plotMapMarkers(getFilteredList());
-    }
-  } else {
-    mapEl.style.display  = 'none';
-    gridEl.style.display = '';
-    btnG.classList.add('active');
-    btnM.classList.remove('active');
-  }
-}
 
 // ── Agency profile cards ───────────────────────────────────
 function fmtStat(n) {
@@ -1633,14 +1468,13 @@ function cardHTML(p) {
   const multi = p.also_at && p.also_at.length ? `<div class="multi-badge">Multi-Listed</div>` : '';
   const alsoAt = p.also_at && p.also_at.length ? `<div class="also-at">Also on: ${p.also_at.join(', ')}</div>` : '';
 
-  const areaLabels = { beach: 'Beach', norte: 'North', centro: 'Centro', surrounding: 'Surrounding', rental: 'Rental', merida: 'Mérida' };
+  const areaLabels = { beach: 'Beach', norte: 'North', centro: 'Centro', surrounding: 'Surrounding', merida: 'Mérida' };
   const typeLabels = { house: 'House', condo: 'Condo', land: 'Land', commercial: 'Commercial' };
   const AREA_ICONS = {
     beach:       `<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M1 9c2-3 8-3 10 0"/><path d="M1 11h10"/><circle cx="9" cy="4" r="1.5"/></svg>`,
     norte:       `<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M6 1v10M1 6h10"/><path d="M6 1l1.5 2.5h-3L6 1z" fill="currentColor" stroke="none"/></svg>`,
     centro:      `<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M6 1C3.8 1 2 2.8 2 5c0 3 4 7 4 7s4-4 4-7c0-2.2-1.8-4-4-4z"/><circle cx="6" cy="5" r="1.3" fill="currentColor" stroke="none"/></svg>`,
     surrounding: `<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M2 9l2-3 1.5 2L7.5 4 10 9H2z"/></svg>`,
-    rental:      `<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5.5a3 3 0 1 0-6 0c0 1 .5 1.8 1 2.5L6 11l2-3c.5-.7 1-1.5 1-2.5z"/><circle cx="6" cy="5.5" r="1" fill="currentColor" stroke="none"/></svg>`,
     merida:      `<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><rect x="1.5" y="4" width="9" height="6.5" rx=".5"/><path d="M1 6.5L6 2l5 4.5"/><path d="M4.5 10.5V8h3v2.5"/></svg>`,
   };
   const areaBadge = p.area
@@ -1660,11 +1494,6 @@ function cardHTML(p) {
     ? `<button class="btn-view" onclick="window.open('${safeUrl(p.url)}','_blank')">View Listing &#8594;</button>`
     : `<button class="btn-view" disabled>Contact Agency</button>`;
 
-  // Feature 7: WhatsApp share button
-  const shareBtn = `<button class="btn-share" title="Share on WhatsApp" onclick="shareWhatsApp('${safeUrl(p.url)}','${encodeURIComponent(p.title || '')}',event)">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
-  </button>`;
-
   // Feature 5: Fav button
   const favBtn = `<button class="btn-fav ${favs.has(p.url) ? 'fav-active' : ''}" onclick="toggleFav('${safeUrl(p.url)}',event)">&#9829;</button>`;
 
@@ -1677,11 +1506,12 @@ function cardHTML(p) {
     ? `<div class="featured-badge"><svg width="11" height="11" viewBox="0 0 11 11" fill="var(--slate)"><path d="M5.5 1l1.2 3.3H10L7.3 6.2l1 3.3-2.8-2-2.8 2 1-3.3L1 4.3h3.3z"/></svg>Featured</div>`
     : '';
 
-  const newBadge = (!p.featured && p.is_new)
-    ? `<div class="new-badge"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round"><path d="M5.5 1v4.5L8 7"/><circle cx="5.5" cy="5.5" r="4.5"/></svg>New Today</div>`
+  const showNew  = NEW_BADGE_ENABLED && !p.featured && p.is_new;
+  const newBadge = showNew
+    ? `<div class="new-badge"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round"><path d="M5.5 1v4.5L8 7"/><circle cx="5.5" cy="5.5" r="4.5"/></svg>New</div>`
     : '';
 
-  const cardClass = p.featured ? ' card-featured' : (p.is_new ? ' card-new' : '');
+  const cardClass = p.featured ? ' card-featured' : (showNew ? ' card-new' : '');
 
   return `<article class="card${cardClass}">
     <div class="card-img" style="background:linear-gradient(135deg,${ag.color},${ag.color}99)">
@@ -1699,7 +1529,7 @@ function cardHTML(p) {
       </div>
       ${alsoAt}
     </div>
-    <div class="card-actions">${viewBtn}${shareBtn}<button class="btn-ask" onclick="openModal('${encodeURIComponent(p.title)}')">Ask Agent</button></div>
+    <div class="card-actions">${viewBtn}</div>
   </article>`;
 }
 
@@ -1744,6 +1574,11 @@ function getFilteredList() {
   // Feature 5: favs filter
   if (showFavs) {
     list = favs.size > 0 ? list.filter(p => favs.has(p.url)) : [];
+  }
+
+  // Feature 9: complete listings only (has price + image)
+  if (completeOnly) {
+    list = list.filter(p => p.price && p.img);
   }
 
   return list;
@@ -1831,7 +1666,7 @@ function render() {
 
   list.sort((a, b) => {
     if (b.featured !== a.featured) return b.featured ? 1 : -1;
-    if (b.is_new   !== a.is_new)   return b.is_new   ? 1 : -1;
+    if (NEW_BADGE_ENABLED && b.is_new !== a.is_new) return b.is_new ? 1 : -1;
     if (sortKey === 'price-asc')  return (a.price || 9999999) - (b.price || 9999999);
     if (sortKey === 'price-desc') return (b.price || 0) - (a.price || 0);
     if (sortKey === 'beds-desc')  return (b.beds  || 0) - (a.beds  || 0);
@@ -1868,10 +1703,6 @@ function render() {
     setTimeout(updatePillCounts, 100);
   }
 
-  // Feature 4: re-plot map if visible
-  if (currentView === 'map' && mapInstance) {
-    plotMapMarkers(list);
-  }
 }
 
 // ── Filter pill events ─────────────────────────────────────
@@ -1961,30 +1792,6 @@ function clearSearch() {
   pushState();
 }
 
-// ── Modal ──────────────────────────────────────────────────
-function openModal(title) {
-  pendingTitle = title ? decodeURIComponent(title) : '';
-  document.getElementById('js-overlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeModal() {
-  document.getElementById('js-overlay').classList.remove('open');
-  document.body.style.overflow = '';
-  document.getElementById('js-form').classList.remove('hidden');
-  document.getElementById('js-success').style.display = 'none';
-}
-function overlayClick(e) {
-  if (e.target === document.getElementById('js-overlay')) closeModal();
-}
-function submitLead(e) {
-  e.preventDefault();
-  const data  = Object.fromEntries(new FormData(e.target));
-  const lines = Object.entries(data).map(([k, v]) => `${k}: ${v}`).join('%0A');
-  const prop  = pendingTitle ? '%0AProperty: ' + encodeURIComponent(pendingTitle) : '';
-  window.open('mailto:stefan.bernius@pm.me?subject=M%C3%A9rida+Property+Inquiry&body=' + lines + prop);
-  e.target.classList.add('hidden');
-  document.getElementById('js-success').style.display = 'block';
-}
 
 // ── Reset all filters ──────────────────────────────────────
 function resetFilters() {
@@ -2020,7 +1827,7 @@ function resetFilters() {
 // ── Active filter badge & chips ────────────────────────────
 const FILTER_LABELS = {
   agency: v => v, price: v => ({under200:'<$200K',['200to500']:'$200–500K',['500to1m']:'$500K–1M',over1m:'$1M+'}[v]||v),
-  beds: v => v+'+ bd', area: v => ({beach:'Beach',norte:'North',centro:'Centro',surrounding:'Surrounding',rental:'Rental/Inv',merida:'Mérida Gen'}[v]||v),
+  beds: v => v+'+ bd', area: v => ({beach:'Beach',norte:'North',centro:'Centro',surrounding:'Surrounding',merida:'Mérida Gen'}[v]||v),
   ptype: v => ({house:'House',condo:'Condo',land:'Land',commercial:'Commercial'}[v]||v)
 };
 function updateFilterBadge() {

@@ -145,6 +145,38 @@ _TYPE_KW = {
 }
 
 
+# Location labels extracted from title for agencies that don't provide a location field
+_LOCATION_FROM_TITLE = [
+    ("Progreso",          ["progreso"]),
+    ("Chelem",            ["chelem"]),
+    ("Telchac",           ["telchac"]),
+    ("Chicxulub Puerto",  ["chicxulub puerto"]),
+    ("Chicxulub Pueblo",  ["chicxulub pueblo"]),
+    ("Sisal",             ["sisal"]),
+    ("Celestún",          ["celestun", "celestún"]),
+    ("Uaymitún",          ["uaymitun", "uaymitún"]),
+    ("Valladolid",        ["valladolid"]),
+    ("Izamal",            ["izamal"]),
+    ("Motul",             ["motul"]),
+    ("Muna",              ["muna"]),
+    ("Ticul",             ["ticul"]),
+    ("Hunucmá",           ["hunucma", "hunucmá"]),
+    ("Umán",              ["uman", "umán"]),
+    ("Tepakán",           ["tepakan", "tepakán"]),
+    ("Xcanatún",          ["xcanatun", "xcanatún"]),
+    ("Norte, Mérida",     ["norte", "altabrisa", "temozon", "temozón", "cabo norte", "cholul", "conkal", "caucel", "montejo", "san ramon", "santa fe", "pensiones"]),
+    ("Centro, Mérida",    ["centro", "colonial", "historic", "mejorada", "garcia gineres", "itzimna", "paseo de montejo", "santa ana", "santiago"]),
+    ("Mérida, Yucatán",   ["merida", "mérida", "yucatan", "yucatán"]),
+]
+
+def _location_from_title(title: str) -> str:
+    h = title.lower()
+    for label, keywords in _LOCATION_FROM_TITLE:
+        if any(kw in h for kw in keywords):
+            return label
+    return ""
+
+
 def _area_bucket(title: str, location: str, url: str) -> str:
     haystack = f"{title} {location} {url}".lower()
     for area, keywords in _AREA_KW.items():
@@ -156,7 +188,7 @@ def _area_bucket(title: str, location: str, url: str) -> str:
 def _type_bucket(title: str, url: str) -> str:
     haystack = f"{title} {url}".lower()
     for ptype, keywords in _TYPE_KW.items():
-        if any(kw in haystack for kw in keywords):
+        if any(re.search(r'\b' + re.escape(kw), haystack) for kw in keywords):
             return ptype
     return "house"
 
@@ -225,6 +257,22 @@ def load_properties(csv_path: Path) -> list[dict]:
             meta     = AGENCY_META.get(agency, {"label": agency.title(), "color": "#555"})
             title    = row["title"].strip()
             location = row["location"].strip() if row["location"] else ""
+            area     = _area_bucket(title, location, url)
+
+            if area == "rental":
+                continue
+
+            # Drop Property Pros listings with neither price nor bedrooms — they're noise
+            if agency == "propertypros" and not row["price"].strip() and not row["bedrooms"].strip():
+                continue
+
+            # Normalize all-caps titles to title case
+            if title == title.upper() and len(title) > 4:
+                title = title.title()
+
+            # Fill missing location from title keywords (e.g. Tierra Yucatán)
+            if not location:
+                location = _location_from_title(title)
 
             props.append({
                 "agency":   agency,
@@ -240,12 +288,20 @@ def load_properties(csv_path: Path) -> list[dict]:
                 "img":      row.get("image_url", "").strip(),
                 "featured":   row.get("featured", "").strip() == "1",
                 "first_seen": row.get("first_seen", "").strip(),
-                "is_new":     row.get("first_seen", "").strip() == today,
+                "is_new":     False,  # resolved after all props loaded
                 "dup":        row["duplicate_flag"],
                 "also_at":    [],
-                "area":       _area_bucket(title, location, url),
+                "area":       area,
                 "ptype":      _type_bucket(title, url),
             })
+
+    # Mark the most-recent crawl batch as new (not just "today")
+    dates = [p["first_seen"] for p in props if p["first_seen"]]
+    if dates:
+        newest = max(dates)
+        for p in props:
+            p["is_new"] = p["first_seen"] == newest
+
     return props
 
 
